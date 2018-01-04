@@ -153,6 +153,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
  
 	var basePath='<%=basePath%>';
 	var loginUserId="${sessionScope.loginUser.id}";
+	 var loginUserType="${sessionScope.loginUser.userType}";
+    if(loginUserType!=0){
+    	$("#menu_bar li").eq(8).show();
+    }else{
+    	$("#menu_bar li").eq(8).hide();
+    }
     $("#loginHead").attr("src","<%=basePath %>personalIcon/"+loginUserId+".jpg");
  
  

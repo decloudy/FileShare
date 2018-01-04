@@ -1,0 +1,77 @@
+body{
+	background-color: #f3f2f2;
+}
+.container {
+    margin: 0 auto;
+    background: #fff;
+    border-left: 1px solid #dbdbdb;
+    border-right: 1px solid #dbdbdb;
+    padding: 0;
+    /*width: 750px;*/
+}
+.item {
+    padding: 10px 10px 8px 18px;
+    border: 1px solid #fff;
+}
+.even {
+	padding: 12px 10px 19px 18px;
+    background: #f7f7f7;
+    border-color: #f7f7f7;
+}
+.td {
+    float: left;
+    margin-right: 5px;
+}
+.hd {
+    height: 17px;
+    width: 17px;
+}
+ .w0 {
+    width: 370px;
+}
+.hshow {
+    visibility: hidden;
+}
+.w1 {
+    width: 15%;
+    margin-right: 12px;
+}
+.text {
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.w2 {
+    width: 18%;
+    margin-right: 12px;
+}
+.choice_btn button{
+	width: 100px;
+	height: 30px;
+	text-align: center;
+	line-height: 10px;
+	margin-left: 20px;
+	margin-right: 30px;
+}
+.input-group input{
+	border-radius: 20px;
+}
+.input-group-btn{
+	margin-left: 20px;
+}
+.btn-search{
+	border-left: none;
+	border-radius: 20px;
+}
+.breadcrumb{
+	line-height: 20px;
+}
+#menu li{
+	text-align: left;
+	font-size: 16px;
+	
+}
+#menuList{
+	height: 660px;
+}
