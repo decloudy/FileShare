@@ -1,0 +1,105 @@
+/*
+* @Author: Marte
+* @Date:   2017-12-15 22:08:06
+* @Last Modified by:   Marte
+* @Last Modified time: 2017-12-17 19:50:19
+*/
+body{
+	font-family:'Microsoft YaHei';
+    background-color: #f3f2f2;
+    background:url(../images/background2.jpg) no-repeat 0px 0px;
+}
+.container{
+    margin-top: 50px;
+    padding: 10px;
+
+}
+
+.menuOption{
+    margin-top:15px;
+
+
+}
+
+#menu_bar li{
+	 
+	 border-left:2px solid black;
+	 background-color:white;
+	 
+}
+
+#menu_bar li a{	 
+	color:black;	 
+}
+
+#menu_bar li:hover{
+	 background-color:#4e72f6;
+	 opacity:0.8;
+}
+
+#menu_bar li a:hover{	 
+	color:white;	 
+}
+
+#fileDrop {
+	color:#4e72f6;
+	 box-shadow:4px 2px 6px #333333;
+}
+
+#fileDrop li a:hover{
+	color:#4e72f6;
+}
+#personalDrop {
+	color:#4e72f6;
+	box-shadow:4px 2px 6px #333333;
+}
+
+#personalDrop li a:hover{
+	color:#4e72f6;
+}
+
+#menuList{
+    height:500px;
+    background-color: white;
+    padding: 15px;
+    border-radius:5px;
+    border:1px #2e1efa solid;
+    box-shadow:4px 2px 6px #333333;
+}
+
+#noticeContent{
+    height:200px;
+}
+
+#submitNotice{
+    margin-top:280px;
+}
+
+#userInput{
+    width:40%;
+    margin-left:15%;
+    margin-top:5%;
+}
+
+#submitUser{
+    margin-top:70px;
+    margin-right:8%;
+    width:30%;
+    float: right;
+}
+
+.del{
+    cursor: pointer;
+    color:#a77f80;
+}
+
+.edit{
+    cursor:pointer;
+    color:#4e72f6;
+}
+
+#editUser{
+    width:50%;
+    margin-left:10%;
+}
+

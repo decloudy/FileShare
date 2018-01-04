@@ -1,0 +1,220 @@
+/*
+* @Author: Marte
+* @Date:   2017-11-30 23:09:26
+* @Last Modified by:   Marte
+* @Last Modified time: 2017-12-17 19:45:58
+*/
+body{
+	font-family:'Microsoft YaHei';
+    background-color: #f3f2f2;
+    background:url(../images/background2.jpg) no-repeat 0px 0px;
+}
+.container{
+    margin-top: 50px;
+    padding: 10px;
+
+}
+#menu_bar li{
+	 
+	 border-left:2px solid black;
+	 background-color:white;
+	 
+}
+
+#menu_bar li a{	 
+	color:black;	 
+}
+
+#menu_bar li:hover{
+	 background-color:#4e72f6;
+	 opacity:0.8;
+}
+
+#menu_bar li a:hover{	 
+	color:white;	 
+}
+
+#fileDrop {
+	color:#4e72f6;
+	 box-shadow:4px 2px 6px #333333;
+}
+
+#fileDrop li a:hover{
+	color:#4e72f6;
+}
+#personalDrop {
+	color:#4e72f6;
+	box-shadow:4px 2px 6px #333333;
+}
+
+#personalDrop li a:hover{
+	color:#4e72f6;
+}
+
+#menu{
+    margin-top:20px;
+}
+.menuOption{
+    margin-top:20px;
+
+
+}
+#editPass{
+    margin-top:10px;
+    width:50%;
+}
+
+.select{
+    margin-bottom:10px;
+    margin-top:40px;
+    margin-left:40px;
+    width:30%;
+    text-align: left;
+    padding-left: 30px;
+
+}
+
+
+#headPic{
+    margin-left:20px;
+    margin-top:10px;
+}
+
+#menuList{
+    height:500px;
+    background-color: white;
+    padding: 15px;
+    border-radius:5px;
+    border:1px #2e1efa solid;
+    box-shadow:4px 2px 6px #333333;
+}
+
+
+#upload{
+    margin-top:50px;
+}
+#submitPic{
+    margin-top:260px;
+}
+
+#uploadPic{
+    margin-left:50px;
+}
+
+#warning{
+    margin-top:80px;
+}
+
+.label{
+    color: #468847;
+    font-size: 15px;
+}
+#mySwitch{
+    width:350px;
+    height:45px;
+    margin-top:40px;
+    margin-left:40px;
+    padding: 5px;
+    border-radius: 5px;
+    border:1px white solid;
+    background-color:#337ab7;
+    box-shadow:4px 2px 6px #333333;
+}
+#check{
+    margin-right:60px;
+    margin-left:20px;
+    font-size: 15px;
+    color:white;
+}
+
+#pwdInput{
+
+    margin-left:10%;
+}
+#infoInput{
+    width:50%;
+    margin-left:10%;
+}
+.gender{
+    width:30%;
+    text-align:left;
+}
+
+.gender input{
+    margin-right:5px;
+}
+.changeSuccess{
+    width:100%;
+    height:80px;
+    text-align:center;
+    line-height:50px;
+}
+
+.changeSuccess i{
+	color:green;
+	position: relative;
+	right:10px;
+}
+
+
+ #inputImage{
+    position:absolute;
+    left:-999px;
+    top:-999px;
+ }
+ .importDiv{
+    position:absolute;
+    right:15%;
+    top: 100px;
+    width:150px;
+    height: 60px;
+ }
+ .importImage{
+    display:inline-block;
+    position:absolute;
+    width:150px;
+    height: 60px;
+    text-align:center;
+    line-height:60px;
+    font-size:18px;
+    border:solid 1px green;
+    background-color:green;
+    color:#fef4e9;
+    border-radius:4%;
+    font-weight:550;
+ }
+
+ .importImage:hover{
+    cursor:pointer;
+    background-color:#337ab7;
+ }
+
+ .imgContainer{
+    display:inline-block;
+    height: 350px;
+    width:350px;
+    box-sizing:border-box;
+    position:relative;
+ }
+ .imgContainer > img{
+    display:inline-block;
+    position:absolute;
+    margin:auto;
+    left:0px;
+    right:0px;
+    bottom:0px;
+    top:0px;
+ }
+ 
+ 
+ .del{
+    cursor: pointer;
+    color:#a77f80;
+}
+
+.dwl{
+    cursor:pointer;
+    color:#468847;
+}
+
+
