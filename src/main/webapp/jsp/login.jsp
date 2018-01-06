@@ -36,7 +36,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<br><h4>密&#8195码:</h4>
 						</div>
 						<div class="col-md-9 column">
-						<form action="dologin.html" method="POST">
+						<form action="<%=basePath %>/user/dologin.html" method="POST">
 						<h4><input type="text" class="form-control" id="name" placeholder="请输入用户名" name="loginname"></h4>
 						<h4><input type="password" class="form-control" id="name" placeholder="请输入密码(初始为6个8)" name="password"></h4>
 						<a href="" class="col-md-offset-9">忘记密码</a>

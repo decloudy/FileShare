@@ -323,6 +323,7 @@ public class UserController {
  	@RequestMapping(value = "/dologin", method = RequestMethod.POST, params = "loginname")
  	public String doload(@RequestParam("loginname") String userAccount, @RequestParam("password") String password,
  			HttpSession session) {
+ 		System.out.println(userAccount);
  		if (userAccount == null || userAccount.length() <= 0) {
  			JOptionPane.showMessageDialog(null, "用户名不能为空", "提示", JOptionPane.ERROR_MESSAGE);
  			return "login";

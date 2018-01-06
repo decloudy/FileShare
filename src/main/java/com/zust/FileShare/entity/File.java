@@ -30,6 +30,7 @@ public class File implements java.io.Serializable {
 	private Filetype filetype;
 	private User user;
 	private String fileName;
+	private String fileAddress;
 	private String fileFormat;
 	private Date uploadTime;
 	private double size;
@@ -46,11 +47,12 @@ public class File implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public File(Filetype filetype, User user, String fileName, String fileFormat, Date uploadTime, double size,
+	public File(Filetype filetype, User user, String fileName,String fileAddress, String fileFormat, Date uploadTime, double size,
 			Integer dwlNum, Set<Notice> notices, Set<User> users, Set<Share> shares, Set<Department> departments) {
 		this.filetype = filetype;
 		this.user = user;
 		this.fileName = fileName;
+		this.fileAddress = fileAddress;
 		this.fileFormat = fileFormat;
 		this.uploadTime = uploadTime;
 		this.size = size;
@@ -105,6 +107,16 @@ public class File implements java.io.Serializable {
 
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
+	}
+	
+	@Column(name = "fileAddress")
+
+	public String getFileAddress() {
+		return this.fileAddress;
+	}
+
+	public void setFileAddress(String fileAddress) {
+		this.fileAddress = fileAddress;
 	}
 
 	@Column(name = "fileFormat")
