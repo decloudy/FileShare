@@ -14,7 +14,7 @@ public interface UserService {
 	
 	public UserDto findByaccount(String Account);
 
-	public List<UserDto> findAll();
+	public List<UserDto> findAllUsers();
 	 
 	public int addUser(UserDto userDto);
 
@@ -25,6 +25,7 @@ public interface UserService {
 	public int setChange(int id, int userSet);
 
 	public List<UserDto> findByPages();
+
 
 
 }

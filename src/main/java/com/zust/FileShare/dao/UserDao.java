@@ -27,5 +27,6 @@ import com.zust.FileShare.entity.User;
 public interface UserDao extends BaseDao<User> {
 	public User findById(int id);
 	public User findByAccount(String Account);
+	public List<User> findAll();
 	
 }

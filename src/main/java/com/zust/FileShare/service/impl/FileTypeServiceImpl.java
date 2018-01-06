@@ -23,7 +23,7 @@ public class FileTypeServiceImpl implements FileTypeServiceI {
 
 	@Override
 	public List<FiletypeDto> getFileTypeList() {
-		List<Filetype> l = fileType.find("from filetype t");
+		List<Filetype> l = fileType.find("from Filetype t");
 		List<FiletypeDto> rl = new ArrayList<FiletypeDto>();
 		if (l != null && l.size() > 0) {
 			for (Filetype t : l) {

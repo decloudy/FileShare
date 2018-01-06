@@ -57,5 +57,17 @@ public class UserDaoImpl extends BaseDaoImpl<User> implements UserDao {
 			throw re;
 		}
 	}
+    
+    
+    public List<User> findAll(){
+        try {
+            String hql = "from User";
+            Query query = sessionFactory.getCurrentSession().createQuery(hql);
+            return query.list();
+        } catch (RuntimeException re) {
+            log.error("find all failed", re);
+            throw re;
+        }
+    }
 
 }

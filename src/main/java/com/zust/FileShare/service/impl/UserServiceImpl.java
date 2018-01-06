@@ -1,5 +1,6 @@
 package com.zust.FileShare.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
@@ -10,6 +11,8 @@ import com.zust.FileShare.dto.UserDto;
 import com.zust.FileShare.entity.Department;
 import com.zust.FileShare.entity.User;
 import com.zust.FileShare.service.UserService;
+
+
 import com.zust.FileShare.dao.DepartmentDao;
 import com.zust.FileShare.dao.UserDao;
 
@@ -142,9 +145,34 @@ public class UserServiceImpl implements UserService {
 	
 	
 	@Override
-	public List<UserDto> findAll() {
+	public List<UserDto> findAllUsers() {
 		// TODO Auto-generated method stub
-		return null;
+		 List<User> userList = userDao.findAll();
+	        List<UserDto> userDtoList = new ArrayList<UserDto>();
+	        for(User user:userList){
+	        	UserDto userdto = new UserDto();
+	            BeanUtils.copyProperties(user,userdto);
+	            userdto.setDepartName(user.getDepartment().getDepartName());
+				userdto.setDepartId(user.getDepartment().getId());
+				if(user.getUserGender()==1){
+					userdto.setGender("男");
+				}else if(user.getUserGender()==-1){
+					userdto.setGender("女");
+				}else{
+					userdto.setGender("保密");
+				}
+				if(user.getAddress()==null||user.getAddress().trim()==""){
+					userdto.setAddress("未填写");
+				}
+				if(user.getEmail()==null||user.getEmail().trim()==""){
+					userdto.setEmail("未填写");
+				}
+				if(user.getTelephone()==null||user.getTelephone().trim()==""){
+					userdto.setTelephone("未填写");
+				}
+	            userDtoList.add(userdto);
+	        }
+	        return userDtoList;
 	}
 
 	@Override

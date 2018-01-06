@@ -36,6 +36,5 @@ public class DepartmentDaoImpl  extends BaseDaoImpl<Department> implements Depar
 		}
 	}
 	
-
 	
 }

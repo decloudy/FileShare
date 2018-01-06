@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zust.FileShare.dto.DepartmentDto;
+import com.zust.FileShare.dto.FiletypeDto;
 import com.zust.FileShare.dto.UserDto;
 import com.zust.FileShare.entity.User;
 import com.zust.FileShare.service.DepartmentService;
+import com.zust.FileShare.service.FileTypeServiceI;
 import com.zust.FileShare.service.UserService;
 
 import javax.servlet.ServletRequest;
@@ -44,6 +46,9 @@ public class UserController {
 	
 	@Autowired
     private DepartmentService departmentService;
+	
+	@Autowired
+    private FileTypeServiceI fileTypeService;
 
     
     @Autowired
@@ -239,11 +244,24 @@ public class UserController {
   				
   				UserDto userDto2=userService.findByaccount(userAccount);
   				String filePath=request.getSession().getServletContext().getRealPath("/")+"/files/"; 
+
   				filePath =filePath+userDto2.getId();
-  				System.out.println(filePath);
+
   				File file = new File(filePath);
-  				file.mkdirs();
-  				
+  	            if (!file.exists()) {  
+  	               file.mkdirs();  
+  	               List<FiletypeDto> fileTypeDto=fileTypeService.getFileTypeList();
+  	             for(FiletypeDto fileType:fileTypeDto){			
+  	    			String childPath=filePath+"/"+fileType.getId();
+  	    			System.out.println(childPath);
+  	    			File typeFile = new File(childPath);
+  	   	            if (!typeFile.exists()) {  
+  	   	            	typeFile.mkdirs();  
+  	   	            } 
+  	    		}
+  	               
+  	            }  
+
 				
   				out.print("{\"success\":\""+resultState+"\"}");
   	  			out.flush();  
@@ -301,7 +319,68 @@ public class UserController {
     
  // µÇÂ¼
  	@RequestMapping(value = "/load", method = RequestMethod.GET)
- 	public String load(HttpSession session) {
+ 	public String load(HttpSession session, HttpServletRequest request) {
+ 		
+ 		List<UserDto> userDto=userService.findAllUsers();
+ 		List<FiletypeDto> fileTypeDto=fileTypeService.getFileTypeList();
+ 		String filePath=request.getSession().getServletContext().getRealPath("/")+"/files/"; 
+ 		for(UserDto user:userDto){
+ 			int id=user.getId();			
+ 			String personalPath=filePath+id;
+ 			File personFile = new File(personalPath);
+	            if (!personFile.exists()) {  
+	            	personFile.mkdirs();
+	            	 
+	  	             for(FiletypeDto fileType:fileTypeDto){			
+	  	    			String childPath=filePath+user.getId()+"/"+fileType.getId();
+	  	    			System.out.println(childPath);
+	  	    			File typeFile = new File(childPath);
+	  	   	            if (!typeFile.exists()) {  
+	  	   	            	typeFile.mkdirs();  
+	  	   	            } 
+	            	
+	  	             }
+	            } 
+ 		}
+ 		
+ 		List<DepartmentDto> departmentDto=departmentService.findAllDepart();
+ 		for(DepartmentDto depart:departmentDto){
+ 			int departId=depart.getId();			
+ 			String departPath=filePath+"depart"+departId;
+ 			File departFile = new File(departPath);
+	            if (!departFile.exists()) {  
+	            	departFile.mkdirs();  
+	            	
+	            	 for(FiletypeDto fileType:fileTypeDto){			
+		  	    			String childPath=departPath+"/"+fileType.getId();
+		  	    			System.out.println(childPath);
+		  	    			File typeFile = new File(childPath);
+		  	   	            if (!typeFile.exists()) {  
+		  	   	            	typeFile.mkdirs();  
+		  	   	            } 
+	            	 }
+	            } 
+ 		}
+ 		
+ 		
+ 		
+ 		String companyPath=filePath+"company";
+ 		File companyFile = new File(companyPath);
+        if (!companyFile.exists()) {  
+        	companyFile.mkdirs(); 
+        	
+        	 for(FiletypeDto fileType:fileTypeDto){			
+	    			String childPath=companyPath+"/"+fileType.getId();
+	    			System.out.println(childPath);
+	    			File typeFile = new File(childPath);
+	   	            if (!typeFile.exists()) {  
+	   	            	typeFile.mkdirs();  
+	   	            } }
+        } 
+ 		
+ 		
+ 		
+ 		
  		return "login";
 
  	}
