@@ -1,6 +1,7 @@
 package com.zust.FileShare.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
@@ -138,9 +139,38 @@ public class UserServiceImpl implements UserService {
 	
 
 	@Override
-	public List<UserDto> findByPages() {
+	public List<UserDto> findByPages(int page,int rows,String sort) {
 		// TODO Auto-generated method stub
-		return null;
+		String hql="from User u ";
+		if(sort!=null&&sort!=""){
+			hql=hql+" ORDER BY "+sort;
+		}
+		List<User> userList = userDao.find(hql, page, rows);
+        List<UserDto> userDtoList = new ArrayList<UserDto>();
+        for(User user:userList){
+        	UserDto userdto = new UserDto();
+            BeanUtils.copyProperties(user,userdto);
+            userdto.setDepartName(user.getDepartment().getDepartName());
+			userdto.setDepartId(user.getDepartment().getId());
+			if(user.getUserGender()==1){
+				userdto.setGender("男");
+			}else if(user.getUserGender()==-1){
+				userdto.setGender("女");
+			}else{
+				userdto.setGender("保密");
+			}
+			if(user.getAddress()==null||user.getAddress().trim()==""){
+				userdto.setAddress("未填写");
+			}
+			if(user.getEmail()==null||user.getEmail().trim()==""){
+				userdto.setEmail("未填写");
+			}
+			if(user.getTelephone()==null||user.getTelephone().trim()==""){
+				userdto.setTelephone("未填写");
+			}
+            userDtoList.add(userdto);
+        }
+        return userDtoList;
 	}
 	
 	
@@ -184,6 +214,21 @@ public class UserServiceImpl implements UserService {
 		user.setDepartment(department);
 		userDao.save(user);
 		return 1;
+	}
+
+	@Override
+	public long getCount() {
+		// TODO Auto-generated method stub
+		return userDao.count("select count(id) from User");
+	}
+
+	@Override
+	public int userChange(int id, String userName, String userAccount, int departId, String workTime) {
+		// TODO Auto-generated method stub
+		String sql="update user u set userName='"+userName+"',userAccount="+userAccount+",departId="+departId+",workTime='"+workTime+"' where u.Id="+id;
+		userDao.executeSql(sql);
+		return 1;
+		
 	}
 
 }

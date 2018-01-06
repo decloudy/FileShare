@@ -34,7 +34,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="height:50px">
                 	
                     <ul class="nav navbar-nav" id="menu_bar">
-                    	<li class="dropdown active" style="width:120px">
+                    	<li class="dropdown" style="width:120px">
 							 <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding:5px;height:50px"><span>
 							<img alt="140x140" src="#" style="width:40px;height:40px;"class="img-circle"  onerror="javascript:this.src='<%=basePath %>images/head/indexImg.jpg'" id="loginHead"/>
 </span>&nbsp&nbsp<span>${sessionScope.loginUser.userName}</span><strong class="caret"></strong></a>
@@ -247,28 +247,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                                                 </th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                   	 张三
-                                                </td>
-                                                <td>
-                                                        1150299110
-                                                </td>
-                                                <td>
-                                                  		  财务部
-                                                </td>
-                                                <td>
-                                                  		  2018-01-01
-                                                </td>
-                                                <td>
-                                                    <i class="fa fa-edit fa-lg edit"></i>
-                                                </td>
-                                                <td>
-                                                    <i class="fa fa-trash-o fa-lg del"></i>
-                                                </td>
-                                            </tr>
-                                             </tbody>
+                                        <tbody id="userBody">
+                                           
+                                        </tbody>
                                 </table>
                                 </div>
                                 <div class="panel-footer" style="padding-top:0px;padding-bottom:0px">
@@ -361,7 +342,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                             </h4>
                         </div>
                         <div class="modal-body" >
-                          	  确认删除此用户吗？
+                          	  确认删除此用户吗？此用户文件将一并删除
                         </div>
                         <div class="modal-footer">
                              <button type="button" class="btn btn-warning" data-dismiss="modal" >取消</button>
@@ -387,26 +368,26 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                              <form class="bs-example bs-example-form" role="form"  id="editUser">
                                             <br>
                                                 <div class="input-group">
-                                                <span class="input-group-addon " >姓名</span>
+                                                <span class="input-group-addon " style="color: #468847;font-weight:bold">姓名</span>
                                                 <input type="text" class="form-control" placeholder="未填写" data-toggle="tooltip"
                                                         data-placement="right" title="请输入真实姓名" >
                                                 </div>
                                             <br>
                                             <div class="input-group">
-                                                <span class="input-group-addon ">工号</span>
-                                                <input type="password" class="form-control" placeholder="未填写" data-toggle="tooltip"
+                                                <span class="input-group-addon " style="color: #468847;font-weight:bold">工号</span>
+                                                <input type="text" class="form-control" placeholder="未填写" data-toggle="tooltip"
                                                         data-placement="right" title="请输入工号" >
                                                 </div>
                                             <br>                                           
                                             
                                             <div class="input-group">
-                                                <span class="input-group-addon ">入职日期</span>
-                                                <input type="password" class="form-control" placeholder="未填写" data-toggle="tooltip"
-                                                        data-placement="right" title="请输入入职日期" >
-                                                </div><br>
+                                                <span class="input-group-addon " style="color: #468847;font-weight:bold">入职日期</span>
+                                                <input type="text" value="" class="form-control" id="datetimepicker1" data-date-format="yyyy-mm-dd">
+                                                </div>
+                                            <br>
 
                                             <div class="input-group">
-                                                    <span class="input-group-addon">部门</span>
+                                                    <span class="input-group-addon" style="color: #468847;font-weight:bold">部门</span>
                                                     <select class="form-control "   >
                                                         <c:forEach var="departList" items="${departList}">
                                 							<option value="${departList.id}"><c:out value="${departList.departName}"></c:out></option>
@@ -417,7 +398,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                         </div>
                         <div class="modal-footer">
                              <button type="button" class="btn btn-warning" data-dismiss="modal" >取消</button>
-                             <button type="button" class="btn btn-primary" >提交修改</button>
+                             <button type="button" class="btn btn-primary" id="changeUser">提交修改</button>
                         </div>
                     </div>
 
@@ -430,7 +411,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
  
  
  <script type="text/javascript">
- 
 	var basePath='<%=basePath%>';
 	var loginUserId="${sessionScope.loginUser.id}";
 	var loginUserType="${sessionScope.loginUser.userType}";
@@ -448,12 +428,113 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
           		  $("#userInput select ").attr("disabled","disabled"); 
           		  $("#editUser select ").attr("disabled","disabled"); 
           		  $("#noticeInput select ").attr("disabled","disabled"); 
-                    break;  
+                   break;  
              }  
           } 
 
     }
   $("#loginHead").attr("src","<%=basePath %>personalIcon/"+loginUserId+".jpg");
  
+ 
+   function edit(val,userId,departId){
+
+   if(loginUserType==1&&loginUserDepartId!=departId)
+   {
+   	 toastr.warning("权限不足"); 
+   }else{
+   
+   	
+   	 $.ajax({
+				type: 'POST',
+				url:basePath+'user/showEditAjax.html',
+				data: {
+					userId:userId,
+					},
+				dataType: 'json',
+				success: function(data){
+				var userName=data.userName;
+				var userAccount=data.userAccount;
+				var departmentId=data.departmentId;
+				var workTime=data.workTime;
+				
+				$("#editUser input").eq(0).val(userName);
+				$("#editUser input").eq(1).val(userAccount);
+				$('#datetimepicker1').val(workTime);
+				for(var i=0;i<opts1.length;i++){  
+           			if(departmentId==opts[i].value){  
+                  		opts1[i].selected = 'selected'; 
+                  		if(loginUserType==1){ 
+          		  		$("#editUser select ").attr("disabled","disabled");} 
+                   		break;  
+             }  
+          }  
+				 
+	 
+				$("#modal-container-99553").modal('show');
+
+				},
+				error: function(jqXHR){
+					alert("发生错误：" + jqXHR.status);
+				},
+			});	
+   	
+   	$("#changeUser").attr("onclick","editUser(\""+userId+"\")");
+   	}
+   	
+   
+	  
+  }
+  
+  
+    function del(val,userId){
+    $("#modal-container-449471").modal('show');
+
+  }
+  
+  
+  function editUser(userId){
+	  var userName=$("#editUser input").eq(0).val().trim();
+	  var userAccount=$("#editUser input").eq(1).val().trim();
+	  var workTime=$('#datetimepicker1').val();
+	  var departmentId=$("#editUser select").val();
+	  
+	  
+	  if(userName==""||userAccount==""){
+		  toastr.error("请输入完整信息");
+	  }else{
+		  $.ajax({
+				type: 'POST',
+				url:basePath+'user/editUserAjax.html',
+				data: {
+					userId:userId,
+					userName:userName,
+					userAccount:userAccount,
+					workTime:workTime,
+					departmentId:departmentId
+					},
+				dataType: 'json',
+				success: function(data){
+				var resultState=data.success;
+				if(resultState==1){
+					$("#modal-container-99553").modal('hide');
+					toastr.success("修改成功");
+					$("#user"+userId).children().eq(0).val(userName);
+					$("#user"+userId).children().eq(1).val(userAccount);
+					$("#user"+userId).children().eq(2).val(data.departName);
+					$("#user"+userId).children().eq(3).val(workTime);
+				}else{
+					 toastr.error("该工号已存在，修改失败");
+				}
+
+				},
+				error: function(jqXHR){
+					alert("发生错误：" + jqXHR.status);
+				},
+			});	
+	  } 
+	  
+	  }
+	  
+  
  
  </script>

@@ -209,6 +209,35 @@ public class UserController {
 }
     
     
+    @RequestMapping(value="/showEditAjax",method=RequestMethod.POST)
+	 public void showEditAjax(HttpServletRequest request,HttpServletResponse response) {
+		try {
+			request.setCharacterEncoding("UTF-8");
+			response.setContentType("text/html;charset=utf-8");
+			int userId= Integer.parseInt(request.getParameter("userId"));
+			PrintWriter out = response.getWriter();
+			UserDto userDto=userService.findById(userId);
+			SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
+			String workTime=dateFormat.format(userDto.getWorkTime());
+			StringBuffer json=new StringBuffer();
+			json.append("{\"userAccount\":\""+userDto.getUserAccount()+"\",");
+			json.append("\"workTime\":\""+workTime+"\",");
+			json.append("\"departmentId\":\""+userDto.getDepartId()+"\",");
+			json.append("\"userName\":\""+userDto.getUserName()+"\"}");
+			out.print(json.toString());
+										
+			out.flush();  
+			out.close(); 
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+}
+    
+    
+    
+    
     @RequestMapping(value="/addUserAjax",method=RequestMethod.POST)
   	 public void addUserAjax(HttpServletRequest request,HttpServletResponse response) throws ParseException {
   		try {
@@ -253,7 +282,6 @@ public class UserController {
   	               List<FiletypeDto> fileTypeDto=fileTypeService.getFileTypeList();
   	             for(FiletypeDto fileType:fileTypeDto){			
   	    			String childPath=filePath+"/"+fileType.getId();
-  	    			System.out.println(childPath);
   	    			File typeFile = new File(childPath);
   	   	            if (!typeFile.exists()) {  
   	   	            	typeFile.mkdirs();  
@@ -274,6 +302,98 @@ public class UserController {
   			e.printStackTrace();
   		}
   }
+    
+    
+    @RequestMapping(value="/showUsersAjax",method=RequestMethod.POST)
+	 public void showUsersAjax(HttpServletRequest request,HttpServletResponse response) {
+		try {
+			request.setCharacterEncoding("UTF-8");
+			response.setContentType("text/html;charset=utf-8");
+			int userId= Integer.parseInt(request.getParameter("userId"));
+			String sort="id";
+			PrintWriter out = response.getWriter();
+			List<UserDto> userDto=userService.findByPages(1, 8, sort);
+			long count=userService.getCount();
+			int pageNum=0;
+			if(count%8==0){
+				pageNum=(int) (count/8);
+			}else{
+				pageNum=(int) (count/8+1);
+			}
+			System.out.println(count);
+			System.out.println(pageNum);
+			
+			StringBuffer json=new StringBuffer();
+			json.append("{\"users\":[");
+			for(UserDto user:userDto){
+				SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
+				String workTime=dateFormat.format(user.getWorkTime());
+				json.append("{\"id\":\""+user.getId()+"\",");
+				json.append("\"departId\":\""+user.getDepartId()+"\",");
+				json.append("\"userName\":\""+user.getUserName()+"\",");
+				json.append("\"workTime\":\""+workTime+"\",");
+				json.append("\"departName\":\""+user.getDepartName()+"\",");
+				json.append("\"userAccount\":\""+user.getUserAccount()+"\"},");	
+			}
+			json.deleteCharAt(json.length() - 1);
+			json.append("]}");
+			out.print(json.toString());
+			out.flush();  
+			out.close(); 
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+}
+    
+    
+    
+    @RequestMapping(value="/editUserAjax",method=RequestMethod.POST)
+  	 public void editUserAjax(HttpServletRequest request,HttpServletResponse response) throws ParseException {
+  		try {
+
+  			int userId= Integer.parseInt(request.getParameter("userId"));
+  			int departId=Integer.parseInt(request.getParameter("departmentId"));
+  			String userName=request.getParameter("userName");
+  			String userAccount=request.getParameter("userAccount");
+  			String workTime=request.getParameter("workTime");
+
+
+  			SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
+  			Date workDate=dateFormat.parse(workTime);
+  			System.out.println(workDate);
+  			PrintWriter out = response.getWriter();
+  			UserDto userDto=userService.findById(userId);
+  			UserDto userDto1=userService.findByaccount(userAccount);
+  			if(userDto1!=null&&userDto.getUserAccount()!=userDto1.getUserAccount()){
+  					int resultState=0;
+  	  				out.print("{\"success\":\""+resultState+"\"}");
+  	  	  			out.flush();  
+  	  	  			out.close(); 
+  				
+  			}else{
+  				
+  				int resultState=userService.userChange(userId, userName, userAccount, departId, workTime);
+  				UserDto userDto2=userService.findById(userId);
+  	  			StringBuffer json=new StringBuffer();
+  	  			json.append("{\"success\":\""+resultState+"\",");
+  	  			json.append("\"departName\":\""+userDto2.getDepartName()+"\"}");
+  	  			System.out.println(json);
+  	  			out.print(json.toString());
+  	  			out.flush();  
+  	  			out.close(); 
+  				
+  				
+  			}
+  			
+
+  		} catch (IOException e) {
+  			// TODO Auto-generated catch block
+  			e.printStackTrace();
+  		}
+  }
+    
     
     
     
@@ -333,7 +453,6 @@ public class UserController {
 	            	 
 	  	             for(FiletypeDto fileType:fileTypeDto){			
 	  	    			String childPath=filePath+user.getId()+"/"+fileType.getId();
-	  	    			System.out.println(childPath);
 	  	    			File typeFile = new File(childPath);
 	  	   	            if (!typeFile.exists()) {  
 	  	   	            	typeFile.mkdirs();  
@@ -345,7 +464,7 @@ public class UserController {
  		
  		List<DepartmentDto> departmentDto=departmentService.findAllDepart();
  		for(DepartmentDto depart:departmentDto){
- 			int departId=depart.getId();			
+ 			int departId=depart.getId();	
  			String departPath=filePath+"depart"+departId;
  			File departFile = new File(departPath);
 	            if (!departFile.exists()) {  
@@ -353,7 +472,6 @@ public class UserController {
 	            	
 	            	 for(FiletypeDto fileType:fileTypeDto){			
 		  	    			String childPath=departPath+"/"+fileType.getId();
-		  	    			System.out.println(childPath);
 		  	    			File typeFile = new File(childPath);
 		  	   	            if (!typeFile.exists()) {  
 		  	   	            	typeFile.mkdirs();  
@@ -371,7 +489,6 @@ public class UserController {
         	
         	 for(FiletypeDto fileType:fileTypeDto){			
 	    			String childPath=companyPath+"/"+fileType.getId();
-	    			System.out.println(childPath);
 	    			File typeFile = new File(childPath);
 	   	            if (!typeFile.exists()) {  
 	   	            	typeFile.mkdirs();  
@@ -402,7 +519,6 @@ public class UserController {
  	@RequestMapping(value = "/dologin", method = RequestMethod.POST, params = "loginname")
  	public String doload(@RequestParam("loginname") String userAccount, @RequestParam("password") String password,
  			HttpSession session) {
- 		System.out.println(userAccount);
  		if (userAccount == null || userAccount.length() <= 0) {
  			JOptionPane.showMessageDialog(null, "用户名不能为空", "提示", JOptionPane.ERROR_MESSAGE);
  			return "login";

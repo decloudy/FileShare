@@ -14,17 +14,41 @@ $(document).ready(function(){
     $("#noticeEdit").hide();
 
   });
+  
+  
+  
+  $.ajax({ 
+	    type: 'POST', 	
+		url: basePath+'user/showUsersAjax.html',
+		data: {
+			userId:"110",
+		},
+		dataType: 'json',
+		success: function(data){
+			$("#userBody").html("");
+			 for(var i=0;i<data.users.length;i++){
+				 	var userName=data.users[i].userName;
+					var userId=data.users[i].id;
+					var departId=data.users[i].departId;
+					var departName=data.users[i].departName;
+					var workTime=data.users[i].workTime;
+					var userAccount=data.users[i].userAccount;
+					showUsers(userId,userName,userAccount,workTime,departId,departName);
+           }
+
+			
+			var result=data.success;
+		},
+		error: function(jqXHR){     
+		   alert("发生错误：" + jqXHR.status);  
+		},     
+	});
+  
 
   $("#editInfo").click(function(){
     $("#userAdd").hide();
     $("#userEdit").fadeIn();
     $("#noticeEdit").hide();
-    
-		
-    
-    
-    
-
 
   });
 
@@ -34,15 +58,9 @@ $(document).ready(function(){
     $("#noticeEdit").fadeIn();
 
   });
-  $(".edit").click(function(){
-    $("#modal-container-99553").modal('show');
 
-  });
 
-  $(".del").click(function(){
-    $("#modal-container-449471").modal('show');
 
-  });
   
   var date=new Date();
   var year=date.getFullYear();
@@ -65,6 +83,12 @@ $(document).ready(function(){
   }; 
   
   $('#datetimepicker').datetimepicker({
+	  minView:2,
+	  autoclose:1,
+	  language:  'zh-CN'
+      });
+  
+  $('#datetimepicker1').datetimepicker({
 	  minView:2,
 	  autoclose:1,
 	  language:  'zh-CN'
@@ -153,32 +177,14 @@ $(document).ready(function(){
   
   
   
-  function showUsers(userId,userName,userAccount,workTime,dapartId,departName){
-		$("#modal-container-362503").modal('show');
-		
-		
-		
-		$.ajax({ 
-		    type: 'POST', 	
-			url: basePath+'user/showUsersAjax',
-			data: {
-				floorId:floorId,
-			},
-			dataType: 'json',
-			success: function(data){
-				if(data.success){
-
-
-					}
-			},
-			error: function(jqXHR){     
-			   alert("发生错误：" + jqXHR.status);  
-			},     
-		});
-		
+  function showUsers(userId,userName,userAccount,workTime,departId,departName){
+		var node='';	
+		node+='<tr id="user'+userId+'"><td>'+userName+'</td><td>'+userAccount+'</td><td>'+departName+'</td><td>'+workTime+'</td><td onclick="edit(this,'+userId+','+departId+')"><i class="fa fa-edit fa-lg edit" ></i><td><i class="fa fa-trash-o fa-lg del" onclick="del(this,'+userId+','+departId+')"></i></td> </tr>';
+		$("#userBody").append(node);
 		
 	}
   
+
   
   
   function creatPageCol(pageNum,pageIndex,themeId,look){

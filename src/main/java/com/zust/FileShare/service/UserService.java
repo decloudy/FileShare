@@ -1,6 +1,7 @@
 
 package com.zust.FileShare.service;
 
+import java.util.Date;
 import java.util.List;
 
 import com.zust.FileShare.dto.UserDto;
@@ -21,10 +22,14 @@ public interface UserService {
 	public int pwdChange(int id,String password);
 
 	public int infoChange(int id,String tel,String email,int gender,String address);
+	
+	public int userChange(int id,String userName,String userAccount,int departId,String workTime);
 
 	public int setChange(int id, int userSet);
 
-	public List<UserDto> findByPages();
+	public List<UserDto> findByPages(int page,int rows,String sort);
+	
+	public long getCount();
 
 
 

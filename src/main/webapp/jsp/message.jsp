@@ -24,7 +24,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="height:50px">
                 	
                     <ul class="nav navbar-nav" id="menu_bar">
-                    	<li class="dropdown active" style="width:120px">
+                    	<li class="dropdown" style="width:120px">
 							 <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding:5px;height:50px"><span>
 							<img alt="140x140" src="#" style="width:40px;height:40px;"class="img-circle"  onerror="javascript:this.src='<%=basePath %>images/head/indexImg.jpg'" id="loginHead"/>
 </span>&nbsp&nbsp<span>${sessionScope.loginUser.userName}</span><strong class="caret"></strong></a>

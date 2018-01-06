@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2018-01-06 14:04:20
+Date: 2018-01-07 02:41:42
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -83,11 +83,16 @@ CREATE TABLE `filetype` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `typeName` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of filetype
 -- ----------------------------
+INSERT INTO `filetype` VALUES ('1', '视频');
+INSERT INTO `filetype` VALUES ('2', '音乐');
+INSERT INTO `filetype` VALUES ('3', '图片');
+INSERT INTO `filetype` VALUES ('4', '文档');
+INSERT INTO `filetype` VALUES ('5', '其他');
 
 -- ----------------------------
 -- Table structure for message
@@ -160,7 +165,7 @@ CREATE TABLE `user` (
   `password` varchar(255) DEFAULT NULL,
   `userAccount` varchar(255) DEFAULT NULL,
   `userName` varchar(255) DEFAULT NULL,
-  `dapartId` int(11) DEFAULT NULL,
+  `departId` int(11) DEFAULT NULL,
   `userGender` int(11) DEFAULT NULL,
   `workTime` date DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
@@ -170,9 +175,9 @@ CREATE TABLE `user` (
   `address` varchar(255) DEFAULT NULL,
   `newMessage` int(255) DEFAULT NULL,
   PRIMARY KEY (`Id`),
-  KEY `user_ibfk_1` (`dapartId`),
-  CONSTRAINT `user_ibfk_1` FOREIGN KEY (`dapartId`) REFERENCES `department` (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+  KEY `user_ibfk_1` (`departId`),
+  CONSTRAINT `user_ibfk_1` FOREIGN KEY (`departId`) REFERENCES `department` (`Id`)
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of user
@@ -182,7 +187,7 @@ INSERT INTO `user` VALUES ('2', '12345', '1150299176', '艾尔', '3', '0', '2017
 INSERT INTO `user` VALUES ('3', '888888', '1150299177', '卫宫', '2', '1', '2018-01-02', null, '33333', '0', '0', null, null);
 INSERT INTO `user` VALUES ('4', '888888', '1150299178', '贞德', '2', '0', '2018-01-03', null, null, '0', '0', null, null);
 INSERT INTO `user` VALUES ('5', '888888', '1150299179', '天草', '2', '0', '2018-01-10', null, null, '0', '0', null, null);
-INSERT INTO `user` VALUES ('6', '888888', '1150299180', '呆毛', '3', '0', '2018-01-02', null, null, '0', '0', null, null);
+INSERT INTO `user` VALUES ('6', '888888', '1150299180', '呆毛1', '3', '0', '2018-01-04', null, null, '0', '0', null, null);
 INSERT INTO `user` VALUES ('7', '888888', '1150299181', '小安', '3', '0', '2018-01-03', null, null, '0', '0', null, null);
 INSERT INTO `user` VALUES ('8', '888888', '1150299182', '梅林', '4', '0', '2018-01-05', null, null, '0', '0', null, null);
 INSERT INTO `user` VALUES ('9', '888888', '1150299183', '玛修', '3', '0', '2018-01-10', null, null, '0', '0', null, null);
@@ -190,6 +195,12 @@ INSERT INTO `user` VALUES ('10', '888888', '1150299184', '拉二', '2', '0', '20
 INSERT INTO `user` VALUES ('11', '888888', '1150299185', '船长', '1', '0', '2018-01-02', null, null, '0', '0', null, null);
 INSERT INTO `user` VALUES ('12', '888888', '1150299186', '孔明', '1', '0', '2018-01-02', null, null, '0', '0', null, null);
 INSERT INTO `user` VALUES ('13', '888888', '1150299187', '黑贞', '2', '0', '2018-01-06', null, null, '0', '0', null, null);
+INSERT INTO `user` VALUES ('14', '888888', '1150299188', '天空', '2', '0', '2018-01-16', null, null, '0', '0', null, null);
+INSERT INTO `user` VALUES ('15', '888888', '1150299189', '艾蕾', '2', '0', '2018-01-06', null, null, '0', '0', null, null);
+INSERT INTO `user` VALUES ('16', '888888', '1150299190', '七天', '1', '0', '2018-01-06', null, null, '0', '0', null, null);
+INSERT INTO `user` VALUES ('17', '888888', '1150299191', '凉凉', '2', '0', '2018-01-06', null, null, '0', '0', null, null);
+INSERT INTO `user` VALUES ('18', '888888', '1150299192', '白霜', '1', '0', '2018-01-06', null, null, '0', '0', null, null);
+INSERT INTO `user` VALUES ('19', '888888', '1150299193', '晴朗', '2', '0', '2018-01-06', null, null, '0', '0', null, null);
 
 -- ----------------------------
 -- Table structure for userfile
