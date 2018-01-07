@@ -308,7 +308,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                                                 <br>
                                                 <div class="input-group">
                                                     <span class="input-group-addon">内容</span>
-                                                    <input type="textarea" class="form-control" placeholder="输入公告内容" id="noticeContent">
+                                                   <textarea class="textarea form-control" style="resize:none;height:240px"   placeholder="请输入公告内容" ></textarea>
                                                 </div>
                                                 <br>
                                                 <div class="input-group">
@@ -561,16 +561,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   			var node='';
   			for(var i=0;i<pageNum;i++){
 
-  			node+='<li><a id="'+(i+1)+'" onclick="page(\''+sortMethod+'\','+(i+1)+')">'+(i+1)+'</a></li>';}
+  			node+='<li><a id="'+(i+1)+'" style="cursor:pointer" onclick="page(\''+sortMethod+'\','+(i+1)+')">'+(i+1)+'</a></li>';}
 
   			if(parseInt(pageNum)!=1&&parseInt(pageIndex)!=parseInt(pageNum)){
-  				node+='<li><a id="'+(parseInt(pageIndex)+1)+'" onclick="page(\''+sortMethod+'\','+(parseInt(pageIndex)+1)+')">下一页 &rarr;</a></li>';
+  				node+='<li><a style="cursor:pointer" id="'+(parseInt(pageIndex)+1)+'" onclick="page(\''+sortMethod+'\','+(parseInt(pageIndex)+1)+')">下一页 &rarr;</a></li>';
   			}
   			$('#page').append(node);
   			$('#page1').append(node);
   			if(parseInt(pageIndex)!=1){
-  				$('#page').prepend('<li><a id="'+(parseInt(pageIndex)-1)+'" onclick="page(\''+sortMethod+'\','+(parseInt(pageIndex)-1)+')">&larr; 上一页</a></li>');
-  				$('#page1').prepend('<li><a id="'+(parseInt(pageIndex)-1)+'" onclick="page(\''+sortMethod+'\','+(parseInt(pageIndex)-1)+')">&larr; 上一页</a></li>');
+  				$('#page').prepend('<li><a style="cursor:pointer" id="'+(parseInt(pageIndex)-1)+'" onclick="page(\''+sortMethod+'\','+(parseInt(pageIndex)-1)+')">&larr; 上一页</a></li>');
+  				$('#page1').prepend('<li><a style="cursor:pointer" id="'+(parseInt(pageIndex)-1)+'" onclick="page(\''+sortMethod+'\','+(parseInt(pageIndex)-1)+')">&larr; 上一页</a></li>');
   			}
   		}
 	
