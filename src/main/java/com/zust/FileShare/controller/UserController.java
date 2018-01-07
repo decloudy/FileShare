@@ -341,7 +341,6 @@ public class UserController {
 			String sort=request.getParameter("sort");
 			String searchContent=request.getParameter("searchContent");
 			String searchMethod=request.getParameter("searchMethod");
-			System.out.println(searchMethod);
 			PrintWriter out = response.getWriter();
 			if(searchContent==null||searchContent==""){
 				
@@ -377,32 +376,44 @@ public class UserController {
 			}else{
 				
 				List<UserDto> userDto=userService.searchByPages(pageIndex, 8, sort, searchMethod, searchContent);
-				long count=userService.getSearchCount(searchMethod, searchContent);
-				int pageNum=0;
-				if(count%8==0){
-					pageNum=(int) (count/8);
-				}else{
-					pageNum=(int) (count/8+1);
-				}
+				
+					long count=userService.getSearchCount(searchMethod, searchContent);
+					if(count!=0){
+					int pageNum=0;
+					if(count%8==0){
+						pageNum=(int) (count/8);
+					}else{
+						pageNum=(int) (count/8+1);
+					}
 
-				StringBuffer json=new StringBuffer();
-				json.append("{\"users\":[");
-				for(UserDto user:userDto){
-					SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
-					String workTime=dateFormat.format(user.getWorkTime());
-					json.append("{\"id\":\""+user.getId()+"\",");
-					json.append("\"departId\":\""+user.getDepartId()+"\",");
-					json.append("\"userName\":\""+user.getUserName()+"\",");
-					json.append("\"workTime\":\""+workTime+"\",");
-					json.append("\"departName\":\""+user.getDepartName()+"\",");
-					json.append("\"pageNum\":\""+pageNum+"\",");
-					json.append("\"userAccount\":\""+user.getUserAccount()+"\"},");	
+					StringBuffer json=new StringBuffer();
+					json.append("{\"users\":[");
+					for(UserDto user:userDto){
+						SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
+						String workTime=dateFormat.format(user.getWorkTime());
+						json.append("{\"id\":\""+user.getId()+"\",");
+						json.append("\"departId\":\""+user.getDepartId()+"\",");
+						json.append("\"userName\":\""+user.getUserName()+"\",");
+						json.append("\"workTime\":\""+workTime+"\",");
+						json.append("\"departName\":\""+user.getDepartName()+"\",");
+						json.append("\"pageNum\":\""+pageNum+"\",");
+						json.append("\"userAccount\":\""+user.getUserAccount()+"\"},");	
+					}
+					json.deleteCharAt(json.length() - 1);
+					json.append("]}");
+					out.print(json.toString());
+					out.flush();  
+					out.close(); 
+					
+				}else{
+					
+					int resultState=0;
+					out.print("{\"success\":\""+resultState+"\"}");
+					out.flush();  
+					out.close(); 
+					
 				}
-				json.deleteCharAt(json.length() - 1);
-				json.append("]}");
-				out.print(json.toString());
-				out.flush();  
-				out.close(); 
+				
 				
 			
 				

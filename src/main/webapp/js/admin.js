@@ -230,6 +230,10 @@ $(document).ready(function(){
   
   
   
+ 
+  
+  
+  
   
   function search(searchContent,searchMethod){	  
 	  
@@ -246,7 +250,12 @@ $(document).ready(function(){
 		dataType: 'json',
 		success: function(data){
 			$("#userBody").html("");
-			 for(var i=0;i<data.users.length;i++){
+			if(data.success){
+				toastr.warning("无相关用户记录");
+				$('#page1').hide();
+			}else{
+				
+				for(var i=0;i<data.users.length;i++){
 				 	var userName=data.users[i].userName;
 					var userId=data.users[i].id;
 					var departId=data.users[i].departId;
@@ -258,6 +267,9 @@ $(document).ready(function(){
 
 			 var pageNum=data.users[0].pageNum;
 			 creatPage(pageNum,1,"userAccount");
+			}
+			
+			 
 
 		},
 		error: function(jqXHR){     
@@ -286,6 +298,9 @@ $(document).ready(function(){
   			sort(sortMethod);
 
   		});
+  		
+  		
+  		
 
   		
   		$("#search li").eq(0).click(function(){
@@ -294,8 +309,17 @@ $(document).ready(function(){
 				search(searchContent,searchMethod);
 				$("#page1").show();
 				$("#page").hide();
-				$("#sort1").show();
-				$("#sort").hide();
+				$("#dropdownMenu2").show();
+				$("#dropdownMenu1").hide();
+				
+				var sortMethod1="userName";
+				var sortMethod2="userAccount";
+				var sortMethod3="departId";
+				
+				$("#sort1 li").eq(0).attr("onclick","sortSearch(\""+sortMethod1+"\",\""+searchMethod+"\",\""+searchContent+"\")");
+				$("#sort1 li").eq(1).attr("onclick","sortSearch(\""+sortMethod2+"\",\""+searchMethod+"\",\""+searchContent+"\")");
+				$("#sort1 li").eq(2).attr("onclick","sortSearch(\""+sortMethod3+"\",\""+searchMethod+"\",\""+searchContent+"\")");
+
 
 		});
 		$("#search li").eq(1).click(function(){
@@ -304,8 +328,17 @@ $(document).ready(function(){
 				search(searchContent,searchMethod);
 				$("#page1").show();
 				$("#page").hide();
-				$("#sort1").show();
-				$("#sort").hide();
+				$("#dropdownMenu2").show();
+				$("#dropdownMenu1").hide();
+				
+				
+				var sortMethod1="userName";
+				var sortMethod2="userAccount";
+				var sortMethod3="departId";
+				
+				$("#sort1 li").eq(0).attr("onclick","sortSearch(\""+sortMethod1+"\",\""+searchMethod+"\",\""+searchContent+"\")");
+				$("#sort1 li").eq(1).attr("onclick","sortSearch(\""+sortMethod2+"\",\""+searchMethod+"\",\""+searchContent+"\")");
+				$("#sort1 li").eq(2).attr("onclick","sortSearch(\""+sortMethod3+"\",\""+searchMethod+"\",\""+searchContent+"\")");
 		})
 
   
@@ -329,6 +362,52 @@ $(document).ready(function(){
   			}
   		}
   
+		
+		
+		 function sortSearch(sortMethod,searchMethod,searchContent){	  
+			  
+			  $.ajax({ 
+				    type: 'POST', 	
+					url: basePath+'user/searchAjax.html',
+					data: {
+						userId:"110",
+						searchMethod:searchMethod,
+						searchContent:searchContent,
+						sort:sortMethod,
+						pageIndex:"1"
+					},
+					dataType: 'json',
+					success: function(data){
+						$("#userBody").html("");
+						if(data.success){
+							toastr.warning("无相关用户记录");
+							$('#page1').hide();
+						}else{
+							
+							for(var i=0;i<data.users.length;i++){
+							 	var userName=data.users[i].userName;
+								var userId=data.users[i].id;
+								var departId=data.users[i].departId;
+								var departName=data.users[i].departName;
+								var workTime=data.users[i].workTime;
+								var userAccount=data.users[i].userAccount;
+								showUsers(userId,userName,userAccount,workTime,departId,departName);
+				      }
+
+						 var pageNum=data.users[0].pageNum;
+						 creatPage(pageNum,1,sortMethod);
+						}
+						
+						 
+
+					},
+					error: function(jqXHR){     
+					   alert("发生错误：" + jqXHR.status);  
+					},     
+				});
+		  
+		  
+		  }
   
   
 

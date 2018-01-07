@@ -252,7 +252,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<UserDto> searchByPages(int page, int rows, String sort, String searchMethod, String searchContent) {
 		// TODO Auto-generated method stub
-		String hql="from User where "+searchMethod+" like'%"+searchContent+"%'";
+		String hql="from User where "+searchMethod+" like'%"+searchContent+"%' order by "+sort;
 		List<User> userList = userDao.find(hql, page, rows);
         List<UserDto> userDtoList = new ArrayList<UserDto>();
         for(User user:userList){

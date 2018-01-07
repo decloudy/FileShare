@@ -34,8 +34,8 @@ public class File implements java.io.Serializable {
 	private String fileFormat;
 	private Date uploadTime;
 	private double size;
+	private Integer fileAttribute;
 	private Integer dwlNum;
-	private Set<Notice> notices = new HashSet<Notice>(0);
 	private Set<User> users = new HashSet<User>(0);
 	private Set<Share> shares = new HashSet<Share>(0);
 	private Set<Department> departments = new HashSet<Department>(0);
@@ -48,7 +48,7 @@ public class File implements java.io.Serializable {
 
 	/** full constructor */
 	public File(Filetype filetype, User user, String fileName,String fileAddress, String fileFormat, Date uploadTime, double size,
-			Integer dwlNum, Set<Notice> notices, Set<User> users, Set<Share> shares, Set<Department> departments) {
+			Integer fileAttribute,Integer dwlNum, Set<User> users, Set<Share> shares, Set<Department> departments) {
 		this.filetype = filetype;
 		this.user = user;
 		this.fileName = fileName;
@@ -56,8 +56,8 @@ public class File implements java.io.Serializable {
 		this.fileFormat = fileFormat;
 		this.uploadTime = uploadTime;
 		this.size = size;
+		this.fileAttribute=fileAttribute;
 		this.dwlNum = dwlNum;
-		this.notices = notices;
 		this.users = users;
 		this.shares = shares;
 		this.departments = departments;
@@ -107,6 +107,16 @@ public class File implements java.io.Serializable {
 
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
+	}
+	
+	@Column(name = "fileAttribute")
+
+	public Integer getFileAttribute() {
+		return this.fileAttribute;
+	}
+
+	public void setFileAttribute(Integer fileAttribute) {
+		this.fileAttribute = fileAttribute;
 	}
 	
 	@Column(name = "fileAddress")
@@ -159,15 +169,6 @@ public class File implements java.io.Serializable {
 		this.dwlNum = dwlNum;
 	}
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "file")
-
-	public Set<Notice> getNotices() {
-		return this.notices;
-	}
-
-	public void setNotices(Set<Notice> notices) {
-		this.notices = notices;
-	}
 
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "files_1")
 

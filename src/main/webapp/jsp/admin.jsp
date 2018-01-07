@@ -215,7 +215,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                                 								<a href="javascript:void(0)"  >按部门排序</a>
                             								</li>     
     													</ul>
-    													<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" id="sort1" style="display:none">
+														</div>	
+                                   					</div> 
+                                   					
+                                   					<div class="input-group"  style="width:80%">
+                                    	
+														<div class="dropdown" >
+    														<button type="button" class="btn dropdown-toggle" id="dropdownMenu2" data-toggle="dropdown" style="display:none;width:60%;background-color:white;border:1px solid #468847">排序
+        														<span class="caret"></span>
+    														</button>
+    													<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu2" id="sort1">
         													<li>
                                 								<a href="javascript:void(0)"  >按姓名排序</a>
                             								</li>
@@ -227,7 +236,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                             								</li>     
     													</ul>
 														</div>	
-                                   					</div>                                   	
+                                   					</div> 
+                                   					
+                                   					
+                                   					                                  	
                                 				</div>
 												</div>
 											</div>
@@ -313,14 +325,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
                                         </div>
                                         <div class="col-md-4 column">
-                                                <form role="form">
-
-                                                <div class="form-group">
-                                                    <label for="exampleInputFile">添加附件</label><br>
-                                                    <input type="file" id="exampleInputFile" id="upload" />
-                                                </div>
                                                 <button type="button" class="btn btn-primary btn-2g btn-block" id="submitNotice">发布公告</button>
-                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -505,6 +510,50 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	}
 	
 	
+			 function sortSearch(sortMethod,searchMethod,searchContent){	  
+			  $.ajax({ 
+				    type: 'POST', 	
+					url: basePath+'user/searchAjax.html',
+					data: {
+						userId:"110",
+						searchMethod:searchMethod,
+						searchContent:searchContent,
+						sort:sortMethod,
+						pageIndex:"1"
+					},
+					dataType: 'json',
+					success: function(data){
+						$("#userBody").html("");
+						if(data.success){
+							toastr.warning("无相关用户记录");
+							$('#page1').hide();
+						}else{
+							
+							for(var i=0;i<data.users.length;i++){
+							 	var userName=data.users[i].userName;
+								var userId=data.users[i].id;
+								var departId=data.users[i].departId;
+								var departName=data.users[i].departName;
+								var workTime=data.users[i].workTime;
+								var userAccount=data.users[i].userAccount;
+								showUsers(userId,userName,userAccount,workTime,departId,departName);
+				      }
+
+						 var pageNum=data.users[0].pageNum;
+						 creatPage(pageNum,1,sortMethod);
+						}
+						
+						 
+
+					},
+					error: function(jqXHR){     
+					   alert("发生错误：" + jqXHR.status);  
+					},     
+				});
+		  
+		  
+		  }
+	
 	
 	  function creatPage(pageNum,pageIndex,sortMethod){
   		  	$('#page').html("");
@@ -556,6 +605,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	}
 	
+	
+	
+
   
   
   function editUser(userId){

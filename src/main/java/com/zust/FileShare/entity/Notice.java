@@ -21,7 +21,6 @@ public class Notice implements java.io.Serializable {
 	// Fields
 
 	private Integer id;
-	private File file;
 	private Department department;
 	private String title;
 	private String noticeContent;
@@ -34,8 +33,7 @@ public class Notice implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public Notice(File file, Department department, String title, String noticeContent, Date noticeTime) {
-		this.file = file;
+	public Notice( Department department, String title, String noticeContent, Date noticeTime) {
 		this.department = department;
 		this.title = title;
 		this.noticeContent = noticeContent;
@@ -56,16 +54,6 @@ public class Notice implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "fileId")
-
-	public File getFile() {
-		return this.file;
-	}
-
-	public void setFile(File file) {
-		this.file = file;
-	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "departId")
