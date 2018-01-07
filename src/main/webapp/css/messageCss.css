@@ -1,0 +1,65 @@
+.margin{
+	margin-top: 10px;
+	margin-bottom:10px;
+}
+.height1{
+	height: 100px;
+}
+.height2{
+	height: 200px;
+}
+.border{
+	border:1px solid #ddd;
+}
+.img{
+	width: 60px;
+	height: 60px;
+	margin-left: 15px;
+	margin-top:20px;
+}
+.disabledtext{
+	width: 90px;
+}
+.textarea{
+	width: 100%;
+	height: 250px;
+	max-width: 100%;
+	max-height: 250px;
+}
+
+#menu_bar li{
+	 
+	 border-left:2px solid black;
+	 background-color:white;
+	 
+}
+
+#menu_bar li a{	 
+	color:black;	 
+}
+
+#menu_bar li:hover{
+	 background-color:#4e72f6;
+	 opacity:0.8;
+}
+
+#menu_bar li a:hover{	 
+	color:white;	 
+}
+
+#fileDrop {
+	color:#4e72f6;
+	 box-shadow:4px 2px 6px #333333;
+}
+
+#fileDrop li a:hover{
+	color:#4e72f6;
+}
+#personalDrop {
+	color:#4e72f6;
+	box-shadow:4px 2px 6px #333333;
+}
+
+#personalDrop li a:hover{
+	color:#4e72f6;
+}

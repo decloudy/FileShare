@@ -8,16 +8,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <head>  
     <meta charset="UTF-8">  
     <link href="<%=basePath %>css/bootstrap.css" rel="stylesheet" type="text/css">
-	<link href="<%=basePath %>css/login.css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" type="text/css" href="<%=basePath %>css/loginCss.css" >
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
 	<script type="text/javascript" src="<%=basePath %>js/jquery-2.1.3.min.js"></script>
-	<script type="text/javascript" src="<%=basePath %>js/bootstrap.min.js"></script>   
+	<script type="text/javascript" src="<%=basePath %>js/bootstrap.min.js"></script>
     <title>login</title>  
 </head>  
 <body>  
 <!-- 账号密码登录 -->  
 <div class="container">
 	<div class="intop">
-		<div class="col-md-12 column" class="height">
+		<div class="col-md-12 column" style="height: 100px;">
 		</div>
 	</div>
 	<div class="row clearfix">
@@ -26,7 +27,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<div class="col-md-1 column">
 				</div>
 				<div class="col-md-5 column">
-					<img  src="<%=basePath %>images/main.jpg" class="image" />
+					<img  src="<%=basePath %>images/main1.jpg" style="width: 100%;height: 250px;" />
 				</div>
 				<div class="col-md-5 column">
 					<h2>登录</h2>
@@ -36,11 +37,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<br><h4>密&#8195码:</h4>
 						</div>
 						<div class="col-md-9 column">
-						<form action="<%=basePath %>/user/dologin.html" method="POST">
-						<h4><input type="text" class="form-control" id="name" placeholder="请输入用户名" name="loginname"></h4>
-						<h4><input type="password" class="form-control" id="name" placeholder="请输入密码(初始为6个8)" name="password"></h4>
-						<a href="" class="col-md-offset-9">忘记密码</a>
-						<br><button type="submit" class="btn btn-primary col-md-offset-2">&#8195登&#8195&#8195录&#8195</button>
+						<form action="dologin.html" method="POST" id="tologin">
+						<h4><input type="text" class="form-control" id="nm" placeholder="请输入用户名" name="loginname"></h4>
+						<h4><input type="password" class="form-control" id="pass" placeholder="请输入密码(初始为6个8)" name="password"></h4>
+						<a href="exit.html" class="col-md-offset-9">忘记密码</a>
+						<br><button type="button" class="btn btn-primary col-md-offset-2" onclick="lg()">&#8195登&#8195&#8195录&#8195</button>
 						</form>
 						</div>
 					</div>
@@ -56,3 +57,25 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 </body>
 </html>
+ <script type="text/javascript">
+ 	var basePath='<%=basePath%>';
+   function lg(){
+  		var name=$("#tologin input").eq(0).val();
+  		var password=$("#tologin input").eq(1).val();
+		if(name==""||password==""){
+		if (name=="") {
+			nm.placeholder="用户名为空";
+		}
+		if(password==""){
+  			pass.placeholder="密码为空";
+  		}
+			return false;
+		}
+		document.getElementById("tologin").submit();		
+  		}
+  			
+
+   
+    
+
+ </script>
