@@ -16,12 +16,23 @@ $(document).ready(function(){
   });
   
   
+ 
+ 
   
-  $.ajax({ 
+
+  $("#editInfo").click(function(){
+    $("#userAdd").hide();
+    $("#userEdit").fadeIn();
+    $("#noticeEdit").hide();
+    
+    
+    $.ajax({ 
 	    type: 'POST', 	
 		url: basePath+'user/showUsersAjax.html',
 		data: {
 			userId:"110",
+			sort:"id",
+			pageIndex:"1"
 		},
 		dataType: 'json',
 		success: function(data){
@@ -34,21 +45,17 @@ $(document).ready(function(){
 					var workTime=data.users[i].workTime;
 					var userAccount=data.users[i].userAccount;
 					showUsers(userId,userName,userAccount,workTime,departId,departName);
-           }
+         }
+			 var pageNum=data.users[1].pageNum;
+			 creatPage(pageNum,1,"userAccount");
 
-			
-			var result=data.success;
 		},
 		error: function(jqXHR){     
 		   alert("发生错误：" + jqXHR.status);  
 		},     
 	});
-  
-
-  $("#editInfo").click(function(){
-    $("#userAdd").hide();
-    $("#userEdit").fadeIn();
-    $("#noticeEdit").hide();
+    
+   
 
   });
 
@@ -179,35 +186,87 @@ $(document).ready(function(){
   
   function showUsers(userId,userName,userAccount,workTime,departId,departName){
 		var node='';	
-		node+='<tr id="user'+userId+'"><td>'+userName+'</td><td>'+userAccount+'</td><td>'+departName+'</td><td>'+workTime+'</td><td onclick="edit(this,'+userId+','+departId+')"><i class="fa fa-edit fa-lg edit" ></i><td><i class="fa fa-trash-o fa-lg del" onclick="del(this,'+userId+','+departId+')"></i></td> </tr>';
+		node+='<tr id="user'+userId+'"><td>'+userName+'</td><td>'+userAccount+'</td><td>'+departName+'</td><td>'+workTime+'</td><td onclick="edit(this,'+userId+','+departId+')"><i class="fa fa-edit fa-lg edit" ></i><td><i class="fa fa-trash-o fa-lg del" onclick="del(this,'+userId+','+departId+')"></i></td><td><i class="fa fa-rotate-right fa-lg reset" onclick="reset(this,'+userId+')"></i></td> </tr>';
 		$("#userBody").append(node);
 		
 	}
   
+  
+  
+  
+  function sort(sortMethod){	  
+	  
+  $.ajax({ 
+    type: 'POST', 	
+	url: basePath+'user/showUsersAjax.html',
+	data: {
+		userId:"110",
+		sort:sortMethod,
+		pageIndex:"1"
+	},
+	dataType: 'json',
+	success: function(data){
+		$("#userBody").html("");
+		 for(var i=0;i<data.users.length;i++){
+			 	var userName=data.users[i].userName;
+				var userId=data.users[i].id;
+				var departId=data.users[i].departId;
+				var departName=data.users[i].departName;
+				var workTime=data.users[i].workTime;
+				var userAccount=data.users[i].userAccount;
+				showUsers(userId,userName,userAccount,workTime,departId,departName);
+      }
+		 var pageNum=data.users[1].pageNum;
+		 creatPage(pageNum,1,sortMethod);
+
+	},
+	error: function(jqXHR){     
+	   alert("发生错误：" + jqXHR.status);  
+	},     
+});
+  
+  
+  }
+  
+  
+  
+  		$("#sort li").eq(0).click(function(){
+  				var sortMethod="userName";
+  				sort(sortMethod);
+
+  		});
+  		$("#sort li").eq(1).click(function(){
+  			var sortMethod="userAccount";
+  			sort(sortMethod);
+
+  		});
+  		$("#sort li").eq(2).click(function(){
+  			var sortMethod="departId";
+  			sort(sortMethod);
+
+  		});
+
+  
 
   
   
-  function creatPageCol(pageNum,pageIndex,themeId,look){
+  		function creatPage(pageNum,pageIndex,sortMethod){
+  		  	$('#page').html("");
+  			var node='';
+  			for(var i=0;i<pageNum;i++){
 
-		var node='';
-		for(var i=0;i<pageNum;i++){
-			if(look=='true'){
+  			node+='<li><a id="'+(i+1)+'" onclick="page(\''+sortMethod+'\','+(i+1)+')">'+(i+1)+'</a></li>';}
 
-				node+='<li><a href="'+basePath+'read?id='+themeId+'&look=true&pageIndex='+(i+1)+'">'+(i+1)+'</a></li>';
-			}
-			else{
-			node+='<li><a href="'+basePath+'read?id='+themeId+'&pageIndex='+(i+1)+'">'+(i+1)+'</a></li>';}
-		}
-
-		if(parseInt(pageNum)!=1&&parseInt(pageIndex)!=parseInt(pageNum)){
-			node+='<li><a href="'+basePath+'read?id='+themeId+'&pageIndex='+(parseInt(pageIndex)+1)+'">下一页 &rarr;</a></li>';
-		}
-		$('.forumPagination').append(node);
-		$('.forumPagination > li:eq('+(parseInt(pageIndex)-1)+')').addClass("focus");
-		if(parseInt(pageIndex)!=1){
-			$('.forumPagination').prepend('<li><a href="'+basePath+'read?id='+themeId+'&pageIndex='+(parseInt(pageIndex)-1)+'">&larr; 上一页</a></li>');
-		}
-	}
+  			if(parseInt(pageNum)!=1&&parseInt(pageIndex)!=parseInt(pageNum)){
+  				node+='<li><a id="'+(parseInt(pageIndex)+1)+'" onclick="page(\''+sortMethod+'\','+(parseInt(pageIndex)+1)+')">下一页 &rarr;</a></li>';
+  			}
+  			$('#page').append(node);
+  			if(parseInt(pageIndex)!=1){
+  				$('#page').prepend('<li><a id="'+(parseInt(pageIndex)-1)+'" onclick="page(\''+sortMethod+'\','+(parseInt(pageIndex)-1)+')">&larr; 上一页</a></li>');
+  			}
+  		}
+  
+  
   
 
 });

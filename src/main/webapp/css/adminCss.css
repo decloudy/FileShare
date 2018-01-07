@@ -98,6 +98,11 @@ body{
     color:#4e72f6;
 }
 
+.reset{
+    cursor:pointer;
+    color:#f9b049;
+}
+
 #editUser{
     width:50%;
     margin-left:10%;

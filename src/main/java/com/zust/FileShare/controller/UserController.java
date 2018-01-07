@@ -310,9 +310,10 @@ public class UserController {
 			request.setCharacterEncoding("UTF-8");
 			response.setContentType("text/html;charset=utf-8");
 			int userId= Integer.parseInt(request.getParameter("userId"));
-			String sort="id";
+			int pageIndex= Integer.parseInt(request.getParameter("pageIndex"));
+			String sort=request.getParameter("sort");
 			PrintWriter out = response.getWriter();
-			List<UserDto> userDto=userService.findByPages(1, 8, sort);
+			List<UserDto> userDto=userService.findByPages(pageIndex, 8, sort);
 			long count=userService.getCount();
 			int pageNum=0;
 			if(count%8==0){
@@ -333,6 +334,7 @@ public class UserController {
 				json.append("\"userName\":\""+user.getUserName()+"\",");
 				json.append("\"workTime\":\""+workTime+"\",");
 				json.append("\"departName\":\""+user.getDepartName()+"\",");
+				json.append("\"pageNum\":\""+pageNum+"\",");
 				json.append("\"userAccount\":\""+user.getUserAccount()+"\"},");	
 			}
 			json.deleteCharAt(json.length() - 1);
@@ -379,7 +381,6 @@ public class UserController {
   	  			StringBuffer json=new StringBuffer();
   	  			json.append("{\"success\":\""+resultState+"\",");
   	  			json.append("\"departName\":\""+userDto2.getDepartName()+"\"}");
-  	  			System.out.println(json);
   	  			out.print(json.toString());
   	  			out.flush();  
   	  			out.close(); 

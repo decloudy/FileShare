@@ -204,15 +204,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     														<button type="button" class="btn dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" style="width:60%;background-color:white;border:1px solid #468847">排序
         														<span class="caret"></span>
     														</button>
-    													<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+    													<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" id="sort">
         													<li>
-                                								<a href="javascript:void(0)">按姓名排序</a>
+                                								<a href="javascript:void(0)"  >按姓名排序</a>
                             								</li>
                             								<li>
-                                								<a href="javascript:void(0)">按工号排序</a>
+                                								<a href="javascript:void(0)"  >按工号排序</a>
                             								</li> 
                             								<li>
-                                								<a href="javascript:void(0)">按部门排序</a>
+                                								<a href="javascript:void(0)"  >按部门排序</a>
                             								</li>     
     													</ul>
 														</div>	
@@ -245,6 +245,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                                                 <th>
                                                    	 用户删除
                                                 </th>
+                                                <th>
+                                                   	 密码重置
+                                                </th>
                                             </tr>
                                         </thead>
                                         <tbody id="userBody">
@@ -254,21 +257,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                                 </div>
                                 <div class="panel-footer" style="padding-top:0px;padding-bottom:0px">
 									<ul class="pagination " id="page">
-                                        <li>
-                                            <a href="#">1</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">2</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">3</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">4</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">下一页</a>
-                                        </li>
+                                        
 
                                 </ul>
                                 </div>
@@ -477,8 +466,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					alert("发生错误：" + jqXHR.status);
 				},
 			});	
-   	
+	
+
    	$("#changeUser").attr("onclick","editUser(\""+userId+"\")");
+   	
    	}
    	
    
@@ -490,6 +481,31 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     $("#modal-container-449471").modal('show');
 
   }
+  
+    function showUsers(userId,userName,userAccount,workTime,departId,departName){
+		var node='';	
+		node+='<tr id="user'+userId+'"><td>'+userName+'</td><td>'+userAccount+'</td><td>'+departName+'</td><td>'+workTime+'</td><td onclick="edit(this,'+userId+','+departId+')"><i class="fa fa-edit fa-lg edit" ></i><td><i class="fa fa-trash-o fa-lg del" onclick="del(this,'+userId+','+departId+')"></i></td><td><i class="fa fa-rotate-right fa-lg reset" onclick="reset(this,'+userId+')"></i></td> </tr>';
+		$("#userBody").append(node);
+		
+	}
+	
+	
+	
+	  function creatPage(pageNum,pageIndex,sortMethod){
+	  	$('#page').html("");
+		var node='';
+		for(var i=0;i<pageNum;i++){
+
+		node+='<li><a id="'+(i+1)+'" onclick="page(\''+sortMethod+'\','+(i+1)+')">'+(i+1)+'</a></li>';}
+
+		if(parseInt(pageNum)!=1&&parseInt(pageIndex)!=parseInt(pageNum)){
+			node+='<li><a id="'+(parseInt(pageIndex)+1)+'" onclick="page(\''+sortMethod+'\','+(parseInt(pageIndex)+1)+')">下一页 &rarr;</a></li>';
+		}
+		$('#page').append(node);
+		if(parseInt(pageIndex)!=1){
+			$('#page').prepend('<li><a id="'+(parseInt(pageIndex)-1)+'" onclick="page(\''+sortMethod+'\','+(parseInt(pageIndex)-1)+')">&larr; 上一页</a></li>');
+		}
+	}
   
   
   function editUser(userId){
@@ -518,10 +534,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				if(resultState==1){
 					$("#modal-container-99553").modal('hide');
 					toastr.success("修改成功");
-					$("#user"+userId).children().eq(0).val(userName);
-					$("#user"+userId).children().eq(1).val(userAccount);
-					$("#user"+userId).children().eq(2).val(data.departName);
-					$("#user"+userId).children().eq(3).val(workTime);
+					 
+
+
+					
+					
+					//var td=$("#user"+userId);
+					//alert($("#user2 td").eq(1).val());
+					//td.children().eq(0).val(userName);
+					//td.children().eq(1).val(userAccount);
+					//td.children().eq(2).val(data.departName);
+					//td.children().eq(3).val(workTime);
 				}else{
 					 toastr.error("该工号已存在，修改失败");
 				}
@@ -534,6 +557,53 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  } 
 	  
 	  }
+	  
+	  
+	  
+	 function page(sortMethod,nowIndex){	
+	 
+	 
+	 var pageIndex=nowIndex;
+	   
+	  
+  $.ajax({ 
+    type: 'POST', 	
+	url: basePath+'user/showUsersAjax.html',
+	data: {
+		userId:"110",
+		sort:sortMethod,
+		pageIndex:pageIndex
+	},
+	dataType: 'json',
+	success: function(data){
+		$("#userBody").html("");
+		 for(var i=0;i<data.users.length;i++){
+			 	var userName=data.users[i].userName;
+				var userId=data.users[i].id;
+				var departId=data.users[i].departId;
+				var departName=data.users[i].departName;
+				var workTime=data.users[i].workTime;
+				var userAccount=data.users[i].userAccount;
+				showUsers(userId,userName,userAccount,workTime,departId,departName);
+      }
+		 var pageNum=data.users[1].pageNum;
+		 creatPage(pageNum,pageIndex,sortMethod);
+
+	},
+	error: function(jqXHR){     
+	   alert("发生错误：" + jqXHR.status);  
+	},     
+});
+  
+  
+  }
+	  
+
+  
+  
+
+	  
+	  
 	  
   
  
