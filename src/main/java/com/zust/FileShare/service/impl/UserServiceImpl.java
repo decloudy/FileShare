@@ -248,6 +248,17 @@ public class UserServiceImpl implements UserService {
 		return 1;
 		
 	}
+	
+	@Override
+	public int deleteUser(int id) {
+		// TODO Auto-generated method stub
+		String sql="delete from user where Id="+id;
+		userDao.executeSql(sql);
+		return 1;
+		
+	}
+	
+	
 
 	@Override
 	public List<UserDto> searchByPages(int page, int rows, String sort, String searchMethod, String searchContent) {

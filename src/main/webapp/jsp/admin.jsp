@@ -355,7 +355,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                         </div>
                         <div class="modal-footer">
                              <button type="button" class="btn btn-warning" data-dismiss="modal" >取消</button>
-                             <button type="button" class="btn btn-primary" >确定</button>
+                             <button type="button" class="btn btn-primary" id="delConfirm">确定</button>
                         </div>
                     </div>
 
@@ -499,6 +499,35 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
     function del(val,userId){
     $("#modal-container-449471").modal('show');
+    $("#delConfirm").click(function(){
+    	 $.ajax({  type: 'POST', 	
+					url: basePath+'user/deleteUserAjax.html',
+					data: {
+						userId:userId
+					},
+					dataType: 'json',
+					success: function(data){
+						$("#userBody").html("");
+						if(data.success){
+							toastr.success("删除成功");
+							$(val).parent().parent().remove();
+						}
+
+ 
+
+					},
+					error: function(jqXHR){     
+					   alert("发生错误：" + jqXHR.status);  
+					},     
+				});
+    
+    
+    	})
+   
+    
+    
+    
+    
 
   }
   

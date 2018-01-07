@@ -340,6 +340,47 @@ $(document).ready(function(){
 				$("#sort1 li").eq(1).attr("onclick","sortSearch(\""+sortMethod2+"\",\""+searchMethod+"\",\""+searchContent+"\")");
 				$("#sort1 li").eq(2).attr("onclick","sortSearch(\""+sortMethod3+"\",\""+searchMethod+"\",\""+searchContent+"\")");
 		})
+		
+		
+		
+		$("#submitNotice").click(function(){
+			  var title=$("#noticeInput input").val().trim();
+			  var content=$("#noticeInput textarea").val().trim();
+			  var departId=$('#noticeInput select').val();
+			  
+			  
+			  if(title==""||content==""){
+				  toastr.error("请填写完整公告内容");
+			  }else{
+				  $.ajax({
+						type: 'POST',
+						url:basePath+'user/putNoticeAjax.html',
+						data: {
+							title:title,
+							content:content,
+							departmentId:departId
+							},
+						dataType: 'json',
+						success: function(data){
+						var resultState=data.success;
+							toastr.success("公告已发布");
+							$("#noticeInput input").val("");
+							$("#noticeInput textarea").val("");
+
+						},
+						error: function(jqXHR){
+							alert("发生错误：" + jqXHR.status);
+						},
+					});	
+			  } 
+				
+
+		});
+		
+		
+		
+		
+		
 
   
   

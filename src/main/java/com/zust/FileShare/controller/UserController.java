@@ -14,10 +14,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zust.FileShare.dto.DepartmentDto;
 import com.zust.FileShare.dto.FiletypeDto;
+import com.zust.FileShare.dto.NoticeDto;
 import com.zust.FileShare.dto.UserDto;
 import com.zust.FileShare.entity.User;
 import com.zust.FileShare.service.DepartmentService;
 import com.zust.FileShare.service.FileTypeServiceI;
+import com.zust.FileShare.service.NoticeService;
 import com.zust.FileShare.service.UserService;
 
 import javax.servlet.ServletRequest;
@@ -49,6 +51,9 @@ public class UserController {
 	
 	@Autowired
     private FileTypeServiceI fileTypeService;
+	
+	@Autowired
+    private NoticeService noticeService;
 
     
     @Autowired
@@ -264,6 +269,25 @@ public class UserController {
 }
     
     
+    @RequestMapping(value="/deleteUserAjax",method=RequestMethod.POST)
+	 public void deleteUserAjax(HttpServletRequest request,HttpServletResponse response) {
+		try {
+			request.setCharacterEncoding("UTF-8");
+			response.setContentType("text/html;charset=utf-8");
+			int userId= Integer.parseInt(request.getParameter("userId"));
+			PrintWriter out = response.getWriter();
+			int state=userService.deleteUser(userId);
+
+			out.print("{\"success\":\""+state+"\"}");								
+			out.flush();  
+			out.close(); 
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+}
+    
     
     @RequestMapping(value="/addUserAjax",method=RequestMethod.POST)
   	 public void addUserAjax(HttpServletRequest request,HttpServletResponse response) throws ParseException {
@@ -329,6 +353,43 @@ public class UserController {
   			e.printStackTrace();
   		}
   }
+    
+    
+    @RequestMapping(value="/putNoticeAjax",method=RequestMethod.POST)
+ 	 public void putNoticeAjax(HttpServletRequest request,HttpServletResponse response) throws ParseException {
+ 		try {
+
+ 			String title= request.getParameter("title");
+ 			String content= request.getParameter("content");
+ 			String workTime= request.getParameter("workTime");
+ 			int departmentId= Integer.parseInt(request.getParameter("departmentId"));
+ 			Date now=new Date();
+
+ 			PrintWriter out = response.getWriter();
+ 			NoticeDto noticeDto=new NoticeDto();
+ 			noticeDto.setDepartId(departmentId);
+ 			noticeDto.setTitle(title);
+ 			noticeDto.setNoticeTime(now);
+ 			noticeDto.setNoticeContent(content);
+ 				
+ 				int state=noticeService.putNotice(noticeDto);
+ 				
+ 				out.print("{\"success\":\""+state+"\"}");
+ 	  			out.flush();  
+ 	  			out.close(); 
+ 			
+ 			 			
+
+ 		} catch (IOException e) {
+ 			// TODO Auto-generated catch block
+ 			e.printStackTrace();
+ 		}
+ }
+    
+    
+    
+    
+    
     
     
     @RequestMapping(value="/searchAjax",method=RequestMethod.POST)

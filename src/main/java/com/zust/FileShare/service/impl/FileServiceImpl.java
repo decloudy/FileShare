@@ -156,4 +156,10 @@ public class FileServiceImpl implements FileServiceI {
 		
 	}
 
+	@Override
+	public int deleteFile(int id) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

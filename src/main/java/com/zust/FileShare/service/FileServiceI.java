@@ -10,17 +10,17 @@ import com.zust.FileShare.entity.File;
 import com.zust.FileShare.entity.User;
 
 /**
- * 璧勬簮Service
+ * 鐠у嫭绨甋ervice
  * 
- * @author 瀛欏畤
+ * @author 鐎涙瑥鐣�
  * 
  */
 public interface FileServiceI {
 
 	/**
-	 * 鑾峰緱璧勬簮鏍�(璧勬簮绫诲瀷涓鸿彍鍗曠被鍨�)
+	 * 閼惧嘲绶辩挧鍕爱閺嶏拷(鐠у嫭绨猾璇茬�锋稉楦垮綅閸楁洜琚崹锟�)
 	 * 
-	 * 閫氳繃鐢ㄦ埛ID鍒ゆ柇锛屼粬鑳界湅鍒扮殑璧勬簮
+	 * 闁俺绻冮悽銊﹀煕ID閸掋倖鏌囬敍灞肩铂閼崇晫婀呴崚鎵畱鐠у嫭绨�
 	 * 
 	 * @param sessionInfo
 	 * @return
@@ -28,9 +28,9 @@ public interface FileServiceI {
 	public List<FileDto> getFile(int id,int type);
 
 	/**
-	 * 鑾峰緱璧勬簮鏍�(鍖呮嫭鎵�鏈夎祫婧愮被鍨�)
+	 * 閼惧嘲绶辩挧鍕爱閺嶏拷(閸栧懏瀚幍锟介張澶庣カ濠ф劗琚崹锟�)
 	 * 
-	 * 閫氳繃鐢ㄦ埛ID鍒ゆ柇锛屼粬鑳界湅鍒扮殑璧勬簮
+	 * 闁俺绻冮悽銊﹀煕ID閸掋倖鏌囬敍灞肩铂閼崇晫婀呴崚鎵畱鐠у嫭绨�
 	 * 
 	 * @param sessionInfo
 	 * @return
@@ -38,7 +38,7 @@ public interface FileServiceI {
 	public List<FileDto> allFile(int id);
 
 	/**
-	 * 鑾峰緱璧勬簮鍒楄〃
+	 * 閼惧嘲绶辩挧鍕爱閸掓銆�
 	 * 
 	 * @param sessionInfo
 	 * 
@@ -47,7 +47,7 @@ public interface FileServiceI {
 	public List<FileDto> fileList();
 
 	/**
-	 * 娣诲姞璧勬簮
+	 * 濞ｈ濮炵挧鍕爱
 	 * 
 	 * @param resource
 	 * @param sessionInfo
@@ -55,31 +55,34 @@ public interface FileServiceI {
 	public void add(FileDto filedto,String type);
 
 	/**
-	 * 鍒犻櫎璧勬簮
+	 * 閸掔娀娅庣挧鍕爱
 	 * 
 	 * @param id
 	 */
 	public void delete(String id);
 
 	/**
-	 * 淇敼璧勬簮
+	 * 娣囶喗鏁肩挧鍕爱
 	 * 
 	 * @param resource
 	 */
 	public void edit(FileDto filedto);
 
 	/**
-	 * 鏌ヨ鏂囦欢
+	 * 閺屻儴顕楅弬鍥︽
 	 * 
 	 * @param resource
 	 */
 	public void select(FileDto filedto);
 
 	/**
-	 * 分享
+	 * 鍒嗕韩
 	 * 
 	 * @param resource
 	 */
 	public void share(FileDto filedto,String id);
+	
+	
+	public int deleteFile(int id);
 
 }

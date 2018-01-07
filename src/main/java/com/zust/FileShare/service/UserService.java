@@ -38,6 +38,8 @@ public interface UserService {
 
 	public long getSearchCount(String searchMethod, String searchContent);
 
+	public int deleteUser(int id);
+
 
 
 }
