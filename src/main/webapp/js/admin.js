@@ -72,7 +72,7 @@ $(document).ready(function(){
   var date=new Date();
   var year=date.getFullYear();
   var month=date.getMonth()+1;
-  var day=date.getDay();
+  var day=date.getDate();
   var time = year+"-"+month+"-"+day;
   $('#datetimepicker').val(time);
   
@@ -230,6 +230,47 @@ $(document).ready(function(){
   
   
   
+  
+  function search(searchContent,searchMethod){	  
+	  
+	  $.ajax({ 
+	    type: 'POST', 	
+		url: basePath+'user/searchAjax.html',
+		data: {
+			userId:"110",
+			searchMethod:searchMethod,
+			searchContent:searchContent,
+			sort:"userAccount",
+			pageIndex:"1"
+		},
+		dataType: 'json',
+		success: function(data){
+			$("#userBody").html("");
+			 for(var i=0;i<data.users.length;i++){
+				 	var userName=data.users[i].userName;
+					var userId=data.users[i].id;
+					var departId=data.users[i].departId;
+					var departName=data.users[i].departName;
+					var workTime=data.users[i].workTime;
+					var userAccount=data.users[i].userAccount;
+					showUsers(userId,userName,userAccount,workTime,departId,departName);
+	      }
+
+			 var pageNum=data.users[0].pageNum;
+			 creatPage(pageNum,1,"userAccount");
+
+		},
+		error: function(jqXHR){     
+		   alert("发生错误：" + jqXHR.status);  
+		},     
+	});
+	  
+	  
+	  }
+  
+  
+  
+  
   		$("#sort li").eq(0).click(function(){
   				var sortMethod="userName";
   				sort(sortMethod);
@@ -246,12 +287,32 @@ $(document).ready(function(){
 
   		});
 
-  
+  		
+  		$("#search li").eq(0).click(function(){
+				var searchMethod="userAccount";
+				var searchContent=$("#searchContent").val()
+				search(searchContent,searchMethod);
+				$("#page1").show();
+				$("#page").hide();
+				$("#sort1").show();
+				$("#sort").hide();
+
+		});
+		$("#search li").eq(1).click(function(){
+				var searchMethod="userName";
+				var searchContent=$("#searchContent").val()
+				search(searchContent,searchMethod);
+				$("#page1").show();
+				$("#page").hide();
+				$("#sort1").show();
+				$("#sort").hide();
+		})
 
   
   
   		function creatPage(pageNum,pageIndex,sortMethod){
   		  	$('#page').html("");
+  		  	$('#page1').html("");
   			var node='';
   			for(var i=0;i<pageNum;i++){
 
@@ -261,8 +322,10 @@ $(document).ready(function(){
   				node+='<li><a id="'+(parseInt(pageIndex)+1)+'" onclick="page(\''+sortMethod+'\','+(parseInt(pageIndex)+1)+')">下一页 &rarr;</a></li>';
   			}
   			$('#page').append(node);
+  			$('#page1').append(node);
   			if(parseInt(pageIndex)!=1){
   				$('#page').prepend('<li><a id="'+(parseInt(pageIndex)-1)+'" onclick="page(\''+sortMethod+'\','+(parseInt(pageIndex)-1)+')">&larr; 上一页</a></li>');
+  				$('#page1').prepend('<li><a id="'+(parseInt(pageIndex)-1)+'" onclick="page(\''+sortMethod+'\','+(parseInt(pageIndex)-1)+')">&larr; 上一页</a></li>');
   			}
   		}
   

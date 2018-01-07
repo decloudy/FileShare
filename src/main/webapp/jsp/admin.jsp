@@ -178,13 +178,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 											<div class="row clearfix">
 												<div class="col-md-4 column">
 													<div class="input-group">
-                                        				<input type="text" class="form-control" placeholder="未输入"/>
+                                        				<input type="text" class="form-control" placeholder="未输入" id="searchContent"/>
                                         				<div class="input-group-btn">
 														<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
 														搜索&nbsp<span class="glyphicon glyphicon-search"> 
 														<span class="caret"></span>
 														</button>
-														<ul class="dropdown-menu pull-right">
+														<ul class="dropdown-menu pull-right" id="search">
 															<li>
                                 								<a href="javascript:void(0)">按工号搜索</a>
                             								</li>
@@ -205,6 +205,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         														<span class="caret"></span>
     														</button>
     													<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" id="sort">
+        													<li>
+                                								<a href="javascript:void(0)"  >按姓名排序</a>
+                            								</li>
+                            								<li>
+                                								<a href="javascript:void(0)"  >按工号排序</a>
+                            								</li> 
+                            								<li>
+                                								<a href="javascript:void(0)"  >按部门排序</a>
+                            								</li>     
+    													</ul>
+    													<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" id="sort1" style="display:none">
         													<li>
                                 								<a href="javascript:void(0)"  >按姓名排序</a>
                             								</li>
@@ -257,6 +268,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                                 </div>
                                 <div class="panel-footer" style="padding-top:0px;padding-bottom:0px">
 									<ul class="pagination " id="page">
+                                        
+
+                                </ul>
+                                <ul class="pagination " id="page1" style="display:none">
                                         
 
                                 </ul>
@@ -484,7 +499,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
     function showUsers(userId,userName,userAccount,workTime,departId,departName){
 		var node='';	
-		node+='<tr id="user'+userId+'"><td>'+userName+'</td><td>'+userAccount+'</td><td>'+departName+'</td><td>'+workTime+'</td><td onclick="edit(this,'+userId+','+departId+')"><i class="fa fa-edit fa-lg edit" ></i><td><i class="fa fa-trash-o fa-lg del" onclick="del(this,'+userId+','+departId+')"></i></td><td><i class="fa fa-rotate-right fa-lg reset" onclick="reset(this,'+userId+')"></i></td> </tr>';
+		node+='<tr id="user'+userId+'"><td>'+userName+'</td><td>'+userAccount+'</td><td>'+departName+'</td><td>'+workTime+'</td><td onclick="edit(this,'+userId+','+departId+')"><i class="fa fa-edit fa-lg edit" ></i><td><i class="fa fa-trash-o fa-lg del" onclick="del(this,'+userId+','+departId+')"></i></td><td><i class="fa fa-rotate-right fa-lg reset" onclick="reset('+departId+','+userId+')"></i></td> </tr>';
 		$("#userBody").append(node);
 		
 	}
@@ -492,20 +507,55 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	
 	  function creatPage(pageNum,pageIndex,sortMethod){
-	  	$('#page').html("");
-		var node='';
-		for(var i=0;i<pageNum;i++){
+  		  	$('#page').html("");
+  		  	$('#page1').html("");
+  			var node='';
+  			for(var i=0;i<pageNum;i++){
 
-		node+='<li><a id="'+(i+1)+'" onclick="page(\''+sortMethod+'\','+(i+1)+')">'+(i+1)+'</a></li>';}
+  			node+='<li><a id="'+(i+1)+'" onclick="page(\''+sortMethod+'\','+(i+1)+')">'+(i+1)+'</a></li>';}
 
-		if(parseInt(pageNum)!=1&&parseInt(pageIndex)!=parseInt(pageNum)){
-			node+='<li><a id="'+(parseInt(pageIndex)+1)+'" onclick="page(\''+sortMethod+'\','+(parseInt(pageIndex)+1)+')">下一页 &rarr;</a></li>';
-		}
-		$('#page').append(node);
-		if(parseInt(pageIndex)!=1){
-			$('#page').prepend('<li><a id="'+(parseInt(pageIndex)-1)+'" onclick="page(\''+sortMethod+'\','+(parseInt(pageIndex)-1)+')">&larr; 上一页</a></li>');
-		}
+  			if(parseInt(pageNum)!=1&&parseInt(pageIndex)!=parseInt(pageNum)){
+  				node+='<li><a id="'+(parseInt(pageIndex)+1)+'" onclick="page(\''+sortMethod+'\','+(parseInt(pageIndex)+1)+')">下一页 &rarr;</a></li>';
+  			}
+  			$('#page').append(node);
+  			$('#page1').append(node);
+  			if(parseInt(pageIndex)!=1){
+  				$('#page').prepend('<li><a id="'+(parseInt(pageIndex)-1)+'" onclick="page(\''+sortMethod+'\','+(parseInt(pageIndex)-1)+')">&larr; 上一页</a></li>');
+  				$('#page1').prepend('<li><a id="'+(parseInt(pageIndex)-1)+'" onclick="page(\''+sortMethod+'\','+(parseInt(pageIndex)-1)+')">&larr; 上一页</a></li>');
+  			}
+  		}
+	
+	
+	 function reset(departId,userId){
+		
+		
+		
+
+   			if(loginUserType==1&&loginUserDepartId!=departId)
+   				{
+   	 				toastr.warning("权限不足"); 
+   				}else{
+   					 $.ajax({
+				type: 'POST',
+				url:basePath+'user/resetPwdAjax.html',
+				data: {
+					userId:userId,
+					},
+				dataType: 'json',
+				success: function(data){
+				var resultState=data.success;
+					toastr.success("密码已重置");
+				},
+				error: function(jqXHR){
+					alert("发生错误：" + jqXHR.status);
+				},
+			});	
+   
+   				}
+			
+	
 	}
+	
   
   
   function editUser(userId){

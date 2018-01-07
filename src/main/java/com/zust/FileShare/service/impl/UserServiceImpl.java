@@ -230,5 +230,56 @@ public class UserServiceImpl implements UserService {
 		return 1;
 		
 	}
+	
+	
+	@Override
+	public long getSearchCount(String searchMethod,String searchContent) {
+		// TODO Auto-generated method stub
+		return userDao.count("select count(id) from User where "+searchMethod+" like'%"+searchContent+"%'");
+	}
+	
+	
+	
+	@Override
+	public int resetPwd(int id, String password) {
+		// TODO Auto-generated method stub
+		String sql="update user u set password='"+password+"' where u.Id="+id;
+		userDao.executeSql(sql);
+		return 1;
+		
+	}
+
+	@Override
+	public List<UserDto> searchByPages(int page, int rows, String sort, String searchMethod, String searchContent) {
+		// TODO Auto-generated method stub
+		String hql="from User where "+searchMethod+" like'%"+searchContent+"%'";
+		List<User> userList = userDao.find(hql, page, rows);
+        List<UserDto> userDtoList = new ArrayList<UserDto>();
+        for(User user:userList){
+        	UserDto userdto = new UserDto();
+            BeanUtils.copyProperties(user,userdto);
+            userdto.setDepartName(user.getDepartment().getDepartName());
+			userdto.setDepartId(user.getDepartment().getId());
+			if(user.getUserGender()==1){
+				userdto.setGender("男");
+			}else if(user.getUserGender()==-1){
+				userdto.setGender("女");
+			}else{
+				userdto.setGender("保密");
+			}
+			if(user.getAddress()==null||user.getAddress().trim()==""){
+				userdto.setAddress("未填写");
+			}
+			if(user.getEmail()==null||user.getEmail().trim()==""){
+				userdto.setEmail("未填写");
+			}
+			if(user.getTelephone()==null||user.getTelephone().trim()==""){
+				userdto.setTelephone("未填写");
+			}
+            userDtoList.add(userdto);
+        }
+        return userDtoList;
+		
+	}
 
 }

@@ -31,6 +31,13 @@ public interface UserService {
 	
 	public long getCount();
 
+	public int resetPwd(int id, String password);
+	
+	
+	public List<UserDto> searchByPages(int page,int rows,String sort,String searchMethod,String searchContent);
+
+	public long getSearchCount(String searchMethod, String searchContent);
+
 
 
 }

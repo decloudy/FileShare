@@ -237,6 +237,33 @@ public class UserController {
     
     
     
+    @RequestMapping(value="/resetPwdAjax",method=RequestMethod.POST)
+	 public void resetPwdAjax(HttpServletRequest request,HttpServletResponse response) {
+		try {
+			request.setCharacterEncoding("UTF-8");
+			response.setContentType("text/html;charset=utf-8");
+			int userId= Integer.parseInt(request.getParameter("userId"));
+			String newPassword="888888";
+			PrintWriter out = response.getWriter();
+			UserDto userDto=userService.findById(userId);
+			UserDto loginUser=(UserDto) session.getAttribute("loginUser");
+			if(userId==loginUser.getId()){
+				loginUser.setPassword(newPassword);
+				session.setAttribute("loginUser", loginUser);
+			}
+			int state=userService.resetPwd(userId, newPassword);
+
+			out.print("{\"success\":\""+state+"\"}");								
+			out.flush();  
+			out.close(); 
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+}
+    
+    
     
     @RequestMapping(value="/addUserAjax",method=RequestMethod.POST)
   	 public void addUserAjax(HttpServletRequest request,HttpServletResponse response) throws ParseException {
@@ -304,6 +331,93 @@ public class UserController {
   }
     
     
+    @RequestMapping(value="/searchAjax",method=RequestMethod.POST)
+	 public void searchAjax(HttpServletRequest request,HttpServletResponse response) {
+		try {
+			request.setCharacterEncoding("UTF-8");
+			response.setContentType("text/html;charset=utf-8");
+			int userId= Integer.parseInt(request.getParameter("userId"));
+			int pageIndex= Integer.parseInt(request.getParameter("pageIndex"));
+			String sort=request.getParameter("sort");
+			String searchContent=request.getParameter("searchContent");
+			String searchMethod=request.getParameter("searchMethod");
+			System.out.println(searchMethod);
+			PrintWriter out = response.getWriter();
+			if(searchContent==null||searchContent==""){
+				
+				List<UserDto> userDto=userService.findByPages(pageIndex, 8, sort);
+				long count=userService.getCount();
+				int pageNum=0;
+				if(count%8==0){
+					pageNum=(int) (count/8);
+				}else{
+					pageNum=(int) (count/8+1);
+				}
+
+				StringBuffer json=new StringBuffer();
+				json.append("{\"users\":[");
+				for(UserDto user:userDto){
+					SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
+					String workTime=dateFormat.format(user.getWorkTime());
+					json.append("{\"id\":\""+user.getId()+"\",");
+					json.append("\"departId\":\""+user.getDepartId()+"\",");
+					json.append("\"userName\":\""+user.getUserName()+"\",");
+					json.append("\"workTime\":\""+workTime+"\",");
+					json.append("\"departName\":\""+user.getDepartName()+"\",");
+					json.append("\"pageNum\":\""+pageNum+"\",");
+					json.append("\"userAccount\":\""+user.getUserAccount()+"\"},");	
+				}
+				json.deleteCharAt(json.length() - 1);
+				json.append("]}");
+				out.print(json.toString());
+				out.flush();  
+				out.close(); 
+				
+				
+			}else{
+				
+				List<UserDto> userDto=userService.searchByPages(pageIndex, 8, sort, searchMethod, searchContent);
+				long count=userService.getSearchCount(searchMethod, searchContent);
+				int pageNum=0;
+				if(count%8==0){
+					pageNum=(int) (count/8);
+				}else{
+					pageNum=(int) (count/8+1);
+				}
+
+				StringBuffer json=new StringBuffer();
+				json.append("{\"users\":[");
+				for(UserDto user:userDto){
+					SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
+					String workTime=dateFormat.format(user.getWorkTime());
+					json.append("{\"id\":\""+user.getId()+"\",");
+					json.append("\"departId\":\""+user.getDepartId()+"\",");
+					json.append("\"userName\":\""+user.getUserName()+"\",");
+					json.append("\"workTime\":\""+workTime+"\",");
+					json.append("\"departName\":\""+user.getDepartName()+"\",");
+					json.append("\"pageNum\":\""+pageNum+"\",");
+					json.append("\"userAccount\":\""+user.getUserAccount()+"\"},");	
+				}
+				json.deleteCharAt(json.length() - 1);
+				json.append("]}");
+				out.print(json.toString());
+				out.flush();  
+				out.close(); 
+				
+			
+				
+			}
+			
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+}
+    
+    
+    
+    
     @RequestMapping(value="/showUsersAjax",method=RequestMethod.POST)
 	 public void showUsersAjax(HttpServletRequest request,HttpServletResponse response) {
 		try {
@@ -321,9 +435,7 @@ public class UserController {
 			}else{
 				pageNum=(int) (count/8+1);
 			}
-			System.out.println(count);
-			System.out.println(pageNum);
-			
+
 			StringBuffer json=new StringBuffer();
 			json.append("{\"users\":[");
 			for(UserDto user:userDto){
