@@ -8,6 +8,7 @@ public class MessageDto {
 	private Integer userByReceiveId;
 	private Integer userBySendId;
 	private String content;
+	private String sendName;
 	private Date msgTime;
 	private Integer msgType;
 	public Integer getId() {
@@ -33,6 +34,14 @@ public class MessageDto {
 	}
 	public void setContent(String content) {
 		this.content = content;
+	}
+	
+	
+	public String getSendName() {
+		return sendName;
+	}
+	public void setSendName(String sendName) {
+		this.sendName = sendName;
 	}
 	public Date getMsgTime() {
 		return msgTime;

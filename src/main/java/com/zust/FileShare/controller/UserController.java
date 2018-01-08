@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zust.FileShare.dto.DepartmentDto;
 import com.zust.FileShare.dto.FiletypeDto;
+import com.zust.FileShare.dto.MessageDto;
 import com.zust.FileShare.dto.NoticeDto;
 import com.zust.FileShare.dto.ShareDto;
 import com.zust.FileShare.dto.UserDto;
@@ -21,6 +22,7 @@ import com.zust.FileShare.entity.User;
 import com.zust.FileShare.service.DepartmentService;
 import com.zust.FileShare.service.FileServiceI;
 import com.zust.FileShare.service.FileTypeServiceI;
+import com.zust.FileShare.service.MessageService;
 import com.zust.FileShare.service.NoticeService;
 import com.zust.FileShare.service.ShareService;
 import com.zust.FileShare.service.UserService;
@@ -65,6 +67,9 @@ public class UserController {
 	
 	@Autowired
     private ShareService shareService;
+	
+	@Autowired
+    private MessageService messageservice;
 
     
     @Autowired
@@ -351,6 +356,27 @@ public class UserController {
 			int state3=userService.deleteUser(userId);
 
 			out.print("{\"success\":\""+state3+"\"}");								
+			out.flush();  
+			out.close(); 
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+}
+    
+    
+    
+    @RequestMapping(value="/deleteMsgAjax",method=RequestMethod.POST)
+	 public void deleteMsgAjax(HttpServletRequest request,HttpServletResponse response) {
+		try {
+			request.setCharacterEncoding("UTF-8");
+			response.setContentType("text/html;charset=utf-8");
+			int msgId= Integer.parseInt(request.getParameter("msgId"));
+			PrintWriter out = response.getWriter();
+			int state=messageservice.deleteMsg(msgId);
+
+			out.print("{\"success\":\""+state+"\"}");								
 			out.flush();  
 			out.close(); 
 
@@ -674,6 +700,50 @@ public class UserController {
     
     
     
+    @RequestMapping(value="/pageMsgAjax",method=RequestMethod.POST)
+	 public void pageMsgAjax(HttpServletRequest request,HttpServletResponse response) {
+		try {
+			request.setCharacterEncoding("UTF-8");
+			response.setContentType("text/html;charset=utf-8");
+			int userId= Integer.parseInt(request.getParameter("userId"));
+			int pageIndex= Integer.parseInt(request.getParameter("pageIndex"));
+			PrintWriter out = response.getWriter();
+			UserDto userDto=(UserDto) session.getAttribute("loginUser");
+ 			
+	 		SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
+			List<MessageDto> messageDto=messageservice.findByPage(pageIndex, 8,userDto.getId());
+			BigInteger count=messageservice.getCount(userDto.getId());
+			int countNum=count.intValue();
+			int pageNum=0;
+			if(countNum%8==0){
+				pageNum=(int) (countNum/8);
+			}else{
+				pageNum=(int) (countNum/8+1);
+			}
+			StringBuffer json=new StringBuffer();
+			json.append("{\"msg\":[");
+			for(MessageDto msg:messageDto){
+				String sendTime=dateFormat.format(msg.getMsgTime());
+				json.append("{\"content\":\""+msg.getContent()+"\",");
+				json.append("\"msgId\":\""+msg.getId()+"\",");
+				json.append("\"sendName\":\""+msg.getSendName()+"\",");
+				json.append("\"pageNum\":\""+pageNum+"\",");
+				json.append("\"sendTime\":\""+sendTime+"\"},");	
+			}
+			json.deleteCharAt(json.length() - 1);
+			json.append("]}");
+	    	
+			out.print(json.toString());
+			out.flush();  
+			out.close(); 
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+}
+    
+    
     @RequestMapping(value="/editUserAjax",method=RequestMethod.POST)
   	 public void editUserAjax(HttpServletRequest request,HttpServletResponse response) throws ParseException {
   		try {
@@ -835,9 +905,38 @@ public class UserController {
  	
  	
  	@RequestMapping(value = "/message", method = RequestMethod.GET)
- 	public String message(HttpSession session) {
+ 	public String message(HttpSession session,ModelMap model) {
+ 		
+ 		UserDto userDto=(UserDto) session.getAttribute("loginUser");
+ 			
+ 		SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
+ 		int pageIndex= 1;
+		List<MessageDto> messageDto=messageservice.findByPage(pageIndex, 8,userDto.getId());
+		BigInteger count=messageservice.getCount(userDto.getId());
+		int countNum=count.intValue();
+		int pageNum=0;
+		if(countNum%8==0){
+			pageNum=(int) (countNum/8);
+		}else{
+			pageNum=(int) (countNum/8+1);
+		}
+		StringBuffer json=new StringBuffer();
+		json.append("{\"msg\":[");
+		for(MessageDto msg:messageDto){
+			String sendTime=dateFormat.format(msg.getMsgTime());
+			json.append("{\"content\":\""+msg.getContent()+"\",");
+			json.append("\"msgId\":\""+msg.getId()+"\",");
+			json.append("\"sendName\":\""+msg.getSendName()+"\",");
+			json.append("\"pageNum\":\""+pageNum+"\",");
+			json.append("\"sendTime\":\""+sendTime+"\"},");	
+		}
+		json.deleteCharAt(json.length() - 1);
+		json.append("]}");
+    	
+		model.addAttribute("msgList",json);
+ 		
+ 		
  		return "message";
-
  	}
 
  	@RequestMapping(value = "/dologin", method = RequestMethod.POST, params = "loginname")

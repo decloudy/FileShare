@@ -22,7 +22,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <script src="https://cdn.bootcss.com/bootstrap-switch/3.3.4/js/bootstrap-switch.min.js"></script>
     <script src="<%=basePath %>cropper/dist/cropper.js"></script>
     <script src="<%=basePath %>js/toastr.min.js"></script>
-	<script src="<%=basePath %>js/message.js"></script>
 </head>
 <body>
     <div id="topMenu"  >
@@ -34,7 +33,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="height:50px">
                 	
                     <ul class="nav navbar-nav" id="menu_bar">
-                    	<li class="dropdown active" style="width:120px">
+                    	<li class="dropdown " style="width:120px">
 							 <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding:5px;height:50px"><span>
 							<img alt="140x140" src="#" style="width:40px;height:40px;"class="img-circle"  onerror="javascript:this.src='<%=basePath %>images/head/indexImg.jpg'" id="loginHead"/>
 </span>&nbsp&nbsp<span>${sessionScope.loginUser.userName}</span><strong class="caret"></strong></a>
@@ -49,7 +48,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                             
                         </li>                 
                         
-                        <li >
+                        <li class="active">
                             <a href="<%=basePath %>user/message.html" ><i class="glyphicon glyphicon-bell"></i>我的消息</a>
                         </li> 
                         <li class="dropdown" >
@@ -91,9 +90,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 </div>
 
             </div>
-                    <button type="button" class="button button-primary button-rounded  button-longshadow button-small menuOption" onclick="but1()"><i class="fa fa-fw fa-plus-square-o"></i> 发送私信</button>
-                    <button type="button" class="button button-primary button-rounded  button-longshadow button-small menuOption" onclick="but2()"><i class="fa fa-fw fa-tag"></i> 查看私信</button>
-                    <button type="button" class="button button-primary button-rounded  button-longshadow button-small menuOption" onclick="but3()"><i class="fa fa-fw fa-tags "></i> 查看分享</button>
+                    <button type="button" class="button button-primary button-rounded  button-longshadow button-small menuOption" onclick="but1()" ><i class="fa fa-fw fa-tags "></i> 我的接收</button>
 				
              </div>
         <div class="col-md-10 column">
@@ -103,53 +100,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                             <div class="panel panel-primary" id="page1">
                                 <div class="panel-heading">
                                     <h3 class="panel-title">
-                                        发送私信
-                                    </h3>
-                                </div>
-                                <div class="panel-body" style="height:450px;background:url(<%=basePath %>images/background3.jpg) no-repeat 0px 0px;">
-
-		  	<div class="sendmessage">
-			<div class="row clearfix">
-				<div class="col-md-4 column ">
-				收件人:
-				<label class="checkbox-inline">
-     			<input type="radio" name="optionsRadiosinline" id="optionsRadios1"
-     			 value="option1" checked> 工号
-  				</label>
-   				<label class="checkbox-inline">
-      			<input type="radio" name="optionsRadiosinline" id="optionsRadios2" 
-        		 value="option2"> 姓名
-  				 </label>
-				</div>
-				<div class="col-md-6 column ">
-				<input type="text" class="form-control" id="name" placeholder="请输入搜索内容">
-				</div>
-				<div class="col-md-1 column">
-					 <button type="button" class="btn btn-default">搜索</button>
-				</div>
-			</div>
-			<div class="row clearfix margin" >
-				<div class="col-md-2 column col-md-offset-1 border height2 " >
-					<img  src="v3/default3.jpg" class="img" />
-					<br>姓名：<input type="text"  disabled="disabled" class="disabledtext"> 
-                	<br>工号：<input type="text"  disabled="disabled" class="disabledtext"> 
-				</div>
-				<div class="col-md-7 column col-md-offset-1">
-				<textarea  class="textarea" style="max-width: 100%;max-height: 250px;" maxlength="250" placeholder="输入信息内容（最多250字）"></textarea>
-				 <button type="button" class="btn btn-default col-md-offset-11">发送</button>
-				</div>
-			</div>
-		    </div>
-		  </div>
-
-                            </div>
-
-
-
-                            <div class="panel panel-primary" id="page2" style="display:none">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title">
-                                      	  查看私信
+                                      	  我的接收
                                     </h3>
                                 </div>
                                 <div class="panel-body" id="shareList" style="height:450px;background:url(<%=basePath %>images/background3.jpg) no-repeat 0px 0px;">
@@ -157,11 +108,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                                         <thead>
                                             <tr style="color:#114257">
                                                 <th>
-                                                    	文件类别
+                                                    	用户名
                                                 </th>
-                                                <th>
-                                                    	文件名
-                                                    </th>
                                                 <th>
                                                    	 分享时间
                                                 </th>
@@ -173,230 +121,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                                                 </th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    	视频
-                                                </td>
-                                                <td>
-                                                        TB - Monthly
-                                                </td>
-                                                <td>
-                                                    01/04/2012
-                                                </td>
-                                                <td>
-                                                    <i class="fa  fa-download fa-lg dwl"></i>
-                                                </td>
-                                                <td>
-                                                    <i class="fa fa-trash-o fa-lg del"></i>
-                                                </td>
-                                            </tr>
-                                            <tr class="success" >
-                                                <td>
-                                                    	文档
-                                                </td>
-                                                <td>
-                                                    TB - Monthly
-                                                </td>
-                                                <td>
-                                                    01/04/2012
-                                                </td>
-                                                <td>
-                                                    <i class="fa  fa-download fa-lg dwl"></i>
-                                                </td>
-                                                <td>
-                                                    <i class="fa fa-trash-o fa-lg del"></i>
-                                                </td>
-                                            </tr>
-                                            <tr class="error">
-                                                <td>
-                                                   	 其他
-                                                </td>
-                                                <td>
-                                                    TB - Monthly
-                                                </td>
-                                                <td>
-                                                    02/04/2012
-                                                </td>
-                                                <td>
-                                                    <i class="fa  fa-download fa-lg dwl"></i>
-                                                </td>
-                                                <td>
-                                                    <i class="fa fa-trash-o fa-lg del"></i>
-                                                </td>
-                                            </tr>
-                                            <tr class="success">
-                                                <td >
-                                                   	 文档
-                                                </td>
-                                                <td>
-                                                    TB - Monthly
-                                                </td>
-                                                <td>
-                                                    01/04/2012
-                                                </td>
-                                                <td>
-                                                    <i class="fa  fa-download fa-lg dwl"></i>
-                                                </td>
-                                                <td>
-                                                    <i class="fa fa-trash-o fa-lg del"></i>
-                                                </td>
-                                            </tr>
-
-
+                                        <tbody id="messageBody">
                                         </tbody>
                                 </table>
 
                                 </div>
                                  <div class="panel-footer" style="padding-top:0px;padding-bottom:0px">
 									<ul class="pagination " id="page">
-                                        <li>
-                                            <a href="#">1</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">2</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">3</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">4</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">下一页</a>
-                                        </li>
 
                                 </ul>
                                 </div>
                             </div>
 
-
-                            <div class="panel panel-primary" id="page3" style="display:none">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title">
-                                       	 查看分享
-                                    </h3>
-                                </div>
-                                <div class="panel-body" style="height:450px;background:url(<%=basePath %>images/background3.jpg) no-repeat 0px 0px;">
-									<table class="table table-striped" >
-                                        <thead>
-                                            <tr style="color:#114257">
-                                                <th>
-                                                    	文件类别
-                                                </th>
-                                                <th>
-                                                    	文件名
-                                                    </th>
-                                                <th>
-                                                   	 分享时间
-                                                </th>
-                                                <th>
-                                                    	文件下载
-                                                </th>
-                                                <th>
-                                                    	删除记录
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    	视频
-                                                </td>
-                                                <td>
-                                                        TB - Monthly
-                                                </td>
-                                                <td>
-                                                    01/04/2012
-                                                </td>
-                                                <td>
-                                                    <i class="fa  fa-download fa-lg dwl"></i>
-                                                </td>
-                                                <td>
-                                                    <i class="fa fa-trash-o fa-lg del"></i>
-                                                </td>
-                                            </tr>
-                                            <tr class="success" >
-                                                <td>
-                                                    	文档
-                                                </td>
-                                                <td>
-                                                    TB - Monthly
-                                                </td>
-                                                <td>
-                                                    01/04/2012
-                                                </td>
-                                                <td>
-                                                    <i class="fa  fa-download fa-lg dwl"></i>
-                                                </td>
-                                                <td>
-                                                    <i class="fa fa-trash-o fa-lg del"></i>
-                                                </td>
-                                            </tr>
-                                            <tr class="error">
-                                                <td>
-                                                   	 其他
-                                                </td>
-                                                <td>
-                                                    TB - Monthly
-                                                </td>
-                                                <td>
-                                                    02/04/2012
-                                                </td>
-                                                <td>
-                                                    <i class="fa  fa-download fa-lg dwl"></i>
-                                                </td>
-                                                <td>
-                                                    <i class="fa fa-trash-o fa-lg del"></i>
-                                                </td>
-                                            </tr>
-                                            <tr class="success">
-                                                <td >
-                                                   	 文档
-                                                </td>
-                                                <td>
-                                                    TB - Monthly
-                                                </td>
-                                                <td>
-                                                    01/04/2012
-                                                </td>
-                                                <td>
-                                                    <i class="fa  fa-download fa-lg dwl"></i>
-                                                </td>
-                                                <td>
-                                                    <i class="fa fa-trash-o fa-lg del"></i>
-                                                </td>
-                                            </tr>
-
-
-                                        </tbody>
-                                </table>                                      
-                                    </div>
-                                    <div class="panel-footer" style="padding-top:0px;padding-bottom:0px">
-									<ul class="pagination " id="page">
-                                        <li>
-                                            <a href="#">上一页</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">1</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">2</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">3</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">4</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">下一页</a>
-                                        </li>
-
-                                </ul>
-                                </div>
-                                </div>
-                                
 
                             </div>
                             </div>
@@ -414,37 +150,133 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
  <script type="text/javascript">
  	var basePath='<%=basePath%>';
  	var loginUserId="${sessionScope.loginUser.id}";
- 	var userId="${user.id}";
- 	var userTelephone="${user.telephone}";
-    var userAddress="${user.address}";
-    var userEmail="${user.email}";
-    var userGender="${user.gender}";
-    var userPassword="${user.password}";
     var loginUserType="${sessionScope.loginUser.userType}";
     
-    
-    $(".imgContainer img").attr("src","<%=basePath %>personalIcon/"+userId+".jpg");
-    $("#headPic").attr("src","<%=basePath %>personalIcon/"+userId+".jpg");
+
+    $("#headPic").attr("src","<%=basePath %>personalIcon/"+loginUserId+".jpg");
     $("#loginHead").attr("src","<%=basePath %>personalIcon/"+loginUserId+".jpg");
     
+      toastr.options = {
 
-  $(function(){
-            var userSet="${user.userSet}";
-        if(userSet==1){
-    		$('#mySwitch input').bootstrapSwitch('state',false); 
-    		$('#mySwitch input').bootstrapSwitch('offColor',"success");
-    		$('#mySwitch input').bootstrapSwitch('onColor',"info");  
-    	}else{
-    		$('#mySwitch input').bootstrapSwitch('state',true); 
-    		$('#mySwitch input').bootstrapSwitch('onColor',"info");
-    		$('#mySwitch input').bootstrapSwitch('offColor',"success"); 
-   			}
-        })
-   
-       
-    if(loginUserType!=0){
-    	$("#menu_bar li").eq(8).show();
-    }else{
-    	$("#menu_bar li").eq(8).hide();
-    }
+	        "closeButton": true, //是否显示关闭按钮
+
+	        "debug": false, //是否使用debug模式
+
+	        "positionClass":'toast-center-center',//弹出窗的位置
+
+	        "showDuration": "300",//显示的动画时间
+
+	        "hideDuration": "300",//消失的动画时间
+
+	        "timeOut": "1000", //展现时间
+
+	        "extendedTimeOut": "1000",//加长展示时间
+
+	        "showEasing": "swing",//显示时的动画缓冲方式
+
+	        "hideEasing": "linear",//消失时的动画缓冲方式
+
+	        "showMethod": "fadeIn",//显示时的动画方式
+
+	        "hideMethod": "fadeOut" //消失时的动画方式
+
+	    };
+    
+    
+     function showShare(msgId,userName,shareTime){
+  		var node='';	
+  		node+='<tr id="msg'+msgId+'"><td>'+userName+'</td><td>'+shareTime+'</td><td onclick="edit(this)"><i class="fa  fa-download fa-lg dwl" ></i><td><i class="fa fa-trash-o fa-lg del" onclick="del(this,'+msgId+')"></i></td> </tr>';
+  		$("#messageBody").append(node);
+  		
+  	}
+  	
+  	
+  	
+  	 function creatPage(pageNum,pageIndex){
+		  	$('#page').html("");
+			var node='';
+			for(var i=0;i<pageNum;i++){
+
+			node+='<li><a id="'+(i+1)+'" style="cursor:pointer" onclick="page('+(i+1)+')">'+(i+1)+'</a></li>';}
+
+			if(parseInt(pageNum)!=1&&parseInt(pageIndex)!=parseInt(pageNum)){
+				node+='<li><a style="cursor:pointer" id="'+(parseInt(pageIndex)+1)+'" onclick="page('+(parseInt(pageIndex)+1)+')">下一页 &rarr;</a></li>';
+			}
+			$('#page').append(node);
+			
+			if(parseInt(pageIndex)!=1){
+				$('#page').prepend('<li><a style="cursor:pointer" id="'+(parseInt(pageIndex)-1)+'" onclick="page('+(parseInt(pageIndex)-1)+')">&larr; 上一页</a></li>');
+				
+			}
+		}
+		
+		
+		var json='${msgList}';
+	
+	if(json!='blank'){
+	var msgJson=JSON.parse(json);
+
+	for(var i=0;i<msgJson.msg.length;i++){
+		showShare(msgJson.msg[i].msgId,msgJson.msg[i].sendName,msgJson.msg[i].sendTime,msgJson.msg[i].content);
+   		
+   	}
+   	creatPage(parseInt(msgJson.msg[0].pageNum),1)
+}
+
+
+
+
+ function page(nowIndex){	
+	 var pageIndex=nowIndex;
+  $.ajax({ 
+    type: 'POST', 	
+	url: basePath+'user/pageMsgAjax.html',
+	data: {
+		userId:"110",
+		pageIndex:pageIndex
+	},
+	dataType: 'json',
+	success: function(data){
+		$("#messageBody").html("");
+		 for(var i=0;i<data.msg.length;i++){
+			 	
+				showShare(data.msg[i].msgId,data.msg[i].sendName,data.msg[i].sendTime,data.msg[i].content);
+      }
+		 var pageNum=data.msg[0].pageNum;
+		 creatPage(pageNum,pageIndex);
+
+	},
+	error: function(jqXHR){     
+	   alert("发生错误：" + jqXHR.status);  
+	},     
+});
+  
+  
+  }
+  
+  
+   function del(val,msgId){
+  		
+    	$.ajax({
+			type: 'POST',
+			url:basePath+'user/deleteMsgAjax.html',
+			data: {
+				msgId:msgId,
+				},
+			dataType: 'json',
+			success: function(data){
+			var state=data.sucess;
+			$(val).parent().parent().remove();
+			toastr.success("删除成功");
+
+			},
+			error: function(jqXHR){
+				alert("发生错误：" + jqXHR.status);
+			},
+		});	
+  		
+  	}
+    
+
+
  </script>

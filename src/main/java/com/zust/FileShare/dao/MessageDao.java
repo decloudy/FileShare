@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.zust.FileShare.entity.Message;
+import com.zust.FileShare.entity.Share;
 import com.zust.FileShare.entity.User;
 
 /**
@@ -23,5 +24,5 @@ import com.zust.FileShare.entity.User;
  * @author MyEclipse Persistence Tools
  */
 public interface MessageDao extends BaseDao<Message> {
-
+	public List<Message> findByUser(String sql,int page,int rows);
 }

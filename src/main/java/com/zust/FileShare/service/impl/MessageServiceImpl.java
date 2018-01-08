@@ -1,5 +1,6 @@
 package com.zust.FileShare.service.impl;
 
+import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,8 +14,12 @@ import org.springframework.stereotype.Service;
 import com.zust.FileShare.dao.MessageDao;
 import com.zust.FileShare.dao.UserDao;
 import com.zust.FileShare.dto.MessageDto;
+import com.zust.FileShare.dto.ShareDto;
 import com.zust.FileShare.dto.UserDto;
+import com.zust.FileShare.entity.File;
+import com.zust.FileShare.entity.Filetype;
 import com.zust.FileShare.entity.Message;
+import com.zust.FileShare.entity.Share;
 import com.zust.FileShare.entity.User;
 import com.zust.FileShare.service.MessageService;
 
@@ -65,11 +70,42 @@ public class MessageServiceImpl implements MessageService {
         return messageDtoList;
 		
 	}
+
+
+	@Override
+	public List<MessageDto> findByPage(int page, int rows,int receiveId) {
+		// TODO Auto-generated method stub
+		String sql="select * from message m where m.receiveId="+receiveId+" order by msgTime desc";
+
+		List<Message> messageList = messagedao.findByUser(sql, page, rows);
+        List<MessageDto> messageDtoList = new ArrayList<MessageDto>();
+          
+        
+        for(Message msg:messageList){
+    		MessageDto msgDto = new MessageDto();
+    		User user=userDao.findById(msg.getUserBySendId().getId());
+    		BeanUtils.copyProperties(msg,msgDto);
+    		msgDto.setSendName(user.getUserName());
+    		messageDtoList.add(msgDto );
+        }
+        return messageDtoList;
+	}
 	
 	
+	@Override
+	public BigInteger getCount(int receiveId) {
+		// TODO Auto-generated method stub
+		return messagedao.countBySql("select count(Id) from Message where receiveId="+receiveId);
+	}
 	
 	
-	
-	
+	@Override
+	public int deleteMsg(int msgId) {
+		// TODO Auto-generated method stub
+		String sql="delete from message where Id="+msgId;
+		messagedao.executeSql(sql);
+		return 1;
+		
+	}
 	
 }
