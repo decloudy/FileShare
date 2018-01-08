@@ -108,4 +108,23 @@ public class MessageServiceImpl implements MessageService {
 		
 	}
 	
+	
+	@Override
+	public int deleteBysendUser(int userId) {
+		// TODO Auto-generated method stub
+		String sql="delete from message where sendId="+userId;
+		messagedao.executeSql(sql);
+		return 1;
+		
+	}
+	
+	@Override
+	public int deleteByreceiveUser(int userId) {
+		// TODO Auto-generated method stub
+		String sql="delete from message where receiveId="+userId;
+		messagedao.executeSql(sql);
+		return 1;
+		
+	}
+	
 }

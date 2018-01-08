@@ -497,7 +497,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   }
   
   
-    function del(val,userId){
+    function del(val,userId,departId){
+    
+    if(loginUserType==1&&loginUserDepartId!=departId)
+   				{
+   	 				toastr.warning("权限不足"); 
+   				}else{
 
     	 $.ajax({  type: 'POST', 	
 					url: basePath+'user/deleteUserAjax.html',
@@ -516,7 +521,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					error: function(jqXHR){     
 					   alert("发生错误：" + jqXHR.status);  
 					},     
-				});
+				});}
     
 
   }

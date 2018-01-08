@@ -17,4 +17,8 @@ public interface MessageService {
 	public BigInteger getCount(int receiveId);
 
 	public int deleteMsg(int msgId);
+
+	public int deleteBysendUser(int userId);
+
+	public int deleteByreceiveUser(int userId);
 }

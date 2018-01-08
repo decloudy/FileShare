@@ -353,6 +353,8 @@ public class UserController {
 			PrintWriter out = response.getWriter();
 			int state1=shareService.deleteByUser(userId);
 			int state2=fileService.deleteByUser(userId);
+			int state4=messageservice.deleteByreceiveUser(userId);
+			int state5=messageservice.deleteBysendUser(userId);
 			int state3=userService.deleteUser(userId);
 
 			out.print("{\"success\":\""+state3+"\"}");								
