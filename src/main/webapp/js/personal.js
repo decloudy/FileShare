@@ -176,12 +176,6 @@ $(document).ready(function(){
     	    $("#modal-container-455769").modal('show');
 
     	  });
-
-      $(".del").click(function(){
-    	    $("#modal-container-455769").modal('show');
-
-    	  });
-      
       
       
       function showShare(userId,fileId,fileType,fileName,shareTime){
@@ -191,20 +185,20 @@ $(document).ready(function(){
   		
   	}
       
-      function creatPage(pageNum,pageIndex,sortMethod){
+      function creatPage(pageNum,pageIndex){
 		  	$('#page').html("");
 			var node='';
 			for(var i=0;i<pageNum;i++){
 
-			node+='<li><a id="'+(i+1)+'" style="cursor:pointer" onclick="page(\''+sortMethod+'\','+(i+1)+')">'+(i+1)+'</a></li>';}
+			node+='<li><a id="'+(i+1)+'" style="cursor:pointer" onclick="page('+(i+1)+')">'+(i+1)+'</a></li>';}
 
 			if(parseInt(pageNum)!=1&&parseInt(pageIndex)!=parseInt(pageNum)){
-				node+='<li><a style="cursor:pointer" id="'+(parseInt(pageIndex)+1)+'" onclick="page(\''+sortMethod+'\','+(parseInt(pageIndex)+1)+')">下一页 &rarr;</a></li>';
+				node+='<li><a style="cursor:pointer" id="'+(parseInt(pageIndex)+1)+'" onclick="page('+(parseInt(pageIndex)+1)+')">下一页 &rarr;</a></li>';
 			}
 			$('#page').append(node);
 			
 			if(parseInt(pageIndex)!=1){
-				$('#page').prepend('<li><a style="cursor:pointer" id="'+(parseInt(pageIndex)-1)+'" onclick="page(\''+sortMethod+'\','+(parseInt(pageIndex)-1)+')">&larr; 上一页</a></li>');
+				$('#page').prepend('<li><a style="cursor:pointer" id="'+(parseInt(pageIndex)-1)+'" onclick="page('+(parseInt(pageIndex)-1)+')">&larr; 上一页</a></li>');
 				
 			}
 		}

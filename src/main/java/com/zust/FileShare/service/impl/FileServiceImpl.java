@@ -173,5 +173,15 @@ public class FileServiceImpl implements FileServiceI {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	
+
+	@Override
+	public int deleteByUser(int userId) {
+		// TODO Auto-generated method stub
+		String sql="delete from file where uploaderId="+userId;
+		fileDao.executeSql(sql);
+		return 1;
+		
+	}
 
 }

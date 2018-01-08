@@ -15,6 +15,8 @@ public  interface  ShareService {
 	public ShareDto findById(int id);
 	public List<ShareDto> findByPages(int page,int rows,String sort,int userId);
 	
-	public BigInteger getCount(int userId); 
+	public BigInteger getCount(int userId);
+	public int deleteShare(int fileId);
+	public int deleteByUser(int userId); 
 	
 }

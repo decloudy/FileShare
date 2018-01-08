@@ -19,6 +19,7 @@ import com.zust.FileShare.dto.ShareDto;
 import com.zust.FileShare.dto.UserDto;
 import com.zust.FileShare.entity.User;
 import com.zust.FileShare.service.DepartmentService;
+import com.zust.FileShare.service.FileServiceI;
 import com.zust.FileShare.service.FileTypeServiceI;
 import com.zust.FileShare.service.NoticeService;
 import com.zust.FileShare.service.ShareService;
@@ -52,6 +53,10 @@ public class UserController {
 	@Autowired
     private DepartmentService departmentService;
 	
+	
+	@Autowired
+    private FileServiceI fileService;
+	
 	@Autowired
     private FileTypeServiceI fileTypeService;
 	
@@ -73,8 +78,7 @@ public class UserController {
 		String workTime=dateFormat.format(userDto.getWorkTime());
     	model.addAttribute("user",userDto);
     	model.addAttribute("workTime",workTime);
-    	
-    	
+
     	int pageIndex= 1;
 		String sort="shareTime";
 		List<ShareDto> shareDto=shareService.findByPages(pageIndex, 8, sort,userDto.getId());
@@ -89,12 +93,13 @@ public class UserController {
 		StringBuffer json=new StringBuffer();
 		json.append("{\"share\":[");
 		for(ShareDto share:shareDto){
+			String shareTime=dateFormat.format(share.getShareTime());
 			json.append("{\"fileId\":\""+share.getFileId()+"\",");
 			json.append("\"fileName\":\""+share.getFileName()+"\",");
 			json.append("\"fileTypeName\":\""+share.getFileTypeName()+"\",");
 			json.append("\"userId\":\""+userDto.getId()+"\",");
 			json.append("\"pageNum\":\""+pageNum+"\",");
-			json.append("\"shareTime\":\""+share.getShareTime()+"\"},");	
+			json.append("\"shareTime\":\""+shareTime+"\"},");	
 		}
 		json.deleteCharAt(json.length() - 1);
 		json.append("]}");
@@ -341,9 +346,11 @@ public class UserController {
 			response.setContentType("text/html;charset=utf-8");
 			int userId= Integer.parseInt(request.getParameter("userId"));
 			PrintWriter out = response.getWriter();
-			int state=userService.deleteUser(userId);
+			int state1=shareService.deleteByUser(userId);
+			int state2=fileService.deleteByUser(userId);
+			int state3=userService.deleteUser(userId);
 
-			out.print("{\"success\":\""+state+"\"}");								
+			out.print("{\"success\":\""+state3+"\"}");								
 			out.flush();  
 			out.close(); 
 
@@ -451,6 +458,27 @@ public class UserController {
  		}
  }
     
+    
+    @RequestMapping(value="/deleteShareAjax",method=RequestMethod.POST)
+	 public void deleteShareAjax(HttpServletRequest request,HttpServletResponse response) throws ParseException {
+		try {
+
+			int fileId=Integer.parseInt(request.getParameter("fileId"));
+			PrintWriter out = response.getWriter();
+				
+				int state=shareService.deleteShare(fileId);
+				
+				out.print("{\"success\":\""+state+"\"}");
+	  			out.flush();  
+	  			out.close(); 
+			
+			 			
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+}
     
     
     
@@ -588,6 +616,52 @@ public class UserController {
 			}
 			json.deleteCharAt(json.length() - 1);
 			json.append("]}");
+			out.print(json.toString());
+			out.flush();  
+			out.close(); 
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+}
+    
+    
+    
+    
+    @RequestMapping(value="/showShareAjax",method=RequestMethod.POST)
+	 public void showShareAjax(HttpServletRequest request,HttpServletResponse response) {
+		try {
+			request.setCharacterEncoding("UTF-8");
+			response.setContentType("text/html;charset=utf-8");
+			int userId= Integer.parseInt(request.getParameter("userId"));
+			int pageIndex= Integer.parseInt(request.getParameter("pageIndex"));
+			PrintWriter out = response.getWriter();
+			String sort="shareTime";
+			List<ShareDto> shareDto=shareService.findByPages(pageIndex, 8, sort,userId);
+			SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
+			BigInteger count=shareService.getCount(userId);
+			int countNum=count.intValue();
+			int pageNum=0;
+			if(countNum%8==0){
+				pageNum=(int) (countNum/8);
+			}else{
+				pageNum=(int) (countNum/8+1);
+			}
+			StringBuffer json=new StringBuffer();
+			json.append("{\"share\":[");
+			for(ShareDto share:shareDto){
+				String shareTime=dateFormat.format(share.getShareTime());
+				json.append("{\"fileId\":\""+share.getFileId()+"\",");
+				json.append("\"fileName\":\""+share.getFileName()+"\",");
+				json.append("\"fileTypeName\":\""+share.getFileTypeName()+"\",");
+				json.append("\"userId\":\""+userId+"\",");
+				json.append("\"pageNum\":\""+pageNum+"\",");
+				json.append("\"shareTime\":\""+shareTime+"\"},");	
+			}
+			json.deleteCharAt(json.length() - 1);
+			json.append("]}");
+	    	
 			out.print(json.toString());
 			out.flush();  
 			out.close(); 

@@ -38,6 +38,8 @@ public class ShareDto{
 	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
+	
+	
 	public Integer getFileId() {
 		return fileId;
 	}

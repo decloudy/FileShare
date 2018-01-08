@@ -31,7 +31,7 @@ public class ShareDaoImpl  extends BaseDaoImpl<Share> implements ShareDao {
 	public List<Share> findByUser(String sql, int page, int rows) {
 		// TODO Auto-generated method stub
 		SQLQuery q = this.getCurrentSession().createSQLQuery(sql);
-		q.setResultTransformer(Transformers.aliasToBean(Share.class));
+		q.addEntity("s", Share.class);
 		return q.setFirstResult((page - 1) * rows).setMaxResults(rows).list();
 	}
 	

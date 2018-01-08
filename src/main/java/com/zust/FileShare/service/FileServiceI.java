@@ -87,4 +87,6 @@ public interface FileServiceI {
 
 	public FileDto findById(int id);
 
+	public int deleteByUser(int userId);
+
 }

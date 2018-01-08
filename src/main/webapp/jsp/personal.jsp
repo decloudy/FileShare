@@ -175,75 +175,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                                                 </th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            <tr id="shareBody">
-                                                <td>
-                                                    	视频
-                                                </td>
-                                                <td>
-                                                        TB - Monthly
-                                                </td>
-                                                <td>
-                                                    01/04/2012
-                                                </td>
-                                                <td>
-                                                    <i class="fa  fa-download fa-lg dwl"></i>
-                                                </td>
-                                                <td>
-                                                    <i class="fa fa-trash-o fa-lg del"></i>
-                                                </td>
-                                            </tr>
-                                            <tr class="success" >
-                                                <td>
-                                                    	文档
-                                                </td>
-                                                <td>
-                                                    TB - Monthly
-                                                </td>
-                                                <td>
-                                                    01/04/2012
-                                                </td>
-                                                <td>
-                                                    <i class="fa  fa-download fa-lg dwl"></i>
-                                                </td>
-                                                <td>
-                                                    <i class="fa fa-trash-o fa-lg del"></i>
-                                                </td>
-                                            </tr>
-                                            <tr class="error">
-                                                <td>
-                                                   	 其他
-                                                </td>
-                                                <td>
-                                                    TB - Monthly
-                                                </td>
-                                                <td>
-                                                    02/04/2012
-                                                </td>
-                                                <td>
-                                                    <i class="fa  fa-download fa-lg dwl"></i>
-                                                </td>
-                                                <td>
-                                                    <i class="fa fa-trash-o fa-lg del"></i>
-                                                </td>
-                                            </tr>
-                                            <tr class="success">
-                                                <td >
-                                                   	 文档
-                                                </td>
-                                                <td>
-                                                    TB - Monthly
-                                                </td>
-                                                <td>
-                                                    01/04/2012
-                                                </td>
-                                                <td>
-                                                    <i class="fa  fa-download fa-lg dwl"></i>
-                                                </td>
-                                                <td>
-                                                    <i class="fa fa-trash-o fa-lg del"></i>
-                                                </td>
-                                            </tr>
+                                        <tbody id="shareBody">
+                                                
 
 
                                         </tbody>
@@ -510,11 +443,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     var userEmail="${user.email}";
     var userGender="${user.gender}";
     var userPassword="${user.password}";
+    var userSet="${user.userSet}";
     var loginUserType="${sessionScope.loginUser.userType}";
     
     
     if(loginUserId!=userId){
     	$(".menuOption:eq(2)").hide();
+    	if(userSet==1){
+    	$(".menuOption:eq(1)").hide();
+    	}
     }
     
     
@@ -530,11 +467,28 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	$("#menu_bar li").eq(8).hide();
     }
     
+    function creatPage(pageNum,pageIndex){
+		  	$('#page').html("");
+			var node='';
+			for(var i=0;i<pageNum;i++){
+
+			node+='<li><a id="'+(i+1)+'" style="cursor:pointer" onclick="page('+(i+1)+')">'+(i+1)+'</a></li>';}
+
+			if(parseInt(pageNum)!=1&&parseInt(pageIndex)!=parseInt(pageNum)){
+				node+='<li><a style="cursor:pointer" id="'+(parseInt(pageIndex)+1)+'" onclick="page('+(parseInt(pageIndex)+1)+')">下一页 &rarr;</a></li>';
+			}
+			$('#page').append(node);
+			
+			if(parseInt(pageIndex)!=1){
+				$('#page').prepend('<li><a style="cursor:pointer" id="'+(parseInt(pageIndex)-1)+'" onclick="page('+(parseInt(pageIndex)-1)+')">&larr; 上一页</a></li>');
+				
+			}
+		}
     
     
     function showShare(userId,fileId,fileType,fileName,shareTime){
   		var node='';	
-  		node+='<tr id="file'+fileId+'"><td>'+fileType+'</td><td>'+fileName+'</td><td>'+shareTime+'</td><td onclick="edit(this,'+userId+','+fileId+')"><i class="fa  fa-download fa-lg dwl" ></i><td><i class="fa fa-trash-o fa-lg del" onclick="del(this,'+userId+','+fileId+')"></i></td> </tr>';
+  		node+='<tr id="file'+fileId+'"><td>'+fileType+'</td><td>'+fileName+'</td><td>'+shareTime+'</td><td onclick="edit(this,'+userId+','+fileId+')"><i class="fa  fa-download fa-lg dwl" ></i><td><i class="fa fa-trash-o fa-lg del" onclick="del(this,'+fileId+')"></i></td> </tr>';
   		$("#shareBody").append(node);
   		
   	}
@@ -545,11 +499,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	if(json!='blank'){
 	var shareJson=JSON.parse(json);
 
-for(var i=0;i<userJson.users.length;i++){
+for(var i=0;i<shareJson.share.length;i++){
 
-   		showShare(shareJson.share[i].userId,shareJson.share[i].fileId,shareJson.share[i].fileType,shareJson.share[i].fileName,shareJson.share[i].shareTime)
+   		showShare(shareJson.share[i].userId,shareJson.share[i].fileId,shareJson.share[i].fileTypeName,shareJson.share[i].fileName,shareJson.share[i].shareTime)
    	}
-   	creatPage(parseInt(shareJson.share[0]..pageNum),1,"shareTime")
+   	creatPage(parseInt(shareJson.share[0].pageNum),1)
 }
     
     
@@ -716,6 +670,31 @@ for(var i=0;i<userJson.users.length;i++){
     
     
     
+    
+    function del(val,fileId){
+  		
+    	$.ajax({
+			type: 'POST',
+			url:basePath+'user/deleteShareAjax.html',
+			data: {
+				fileId:fileId,
+				},
+			dataType: 'json',
+			success: function(data){
+			var state=data.sucess;
+			$(val).parent().parent().remove();
+			toastr.success("删除成功");
+
+			},
+			error: function(jqXHR){
+				alert("发生错误：" + jqXHR.status);
+			},
+		});	
+  		
+  	}
+    
+    
+    
     $('#mySwitch input').on('switchChange.bootstrapSwitch', function (event,state) { 
     	var setState;
     	if(state){
@@ -743,5 +722,36 @@ for(var i=0;i<userJson.users.length;i++){
 		});	
           
     }); 
+    
+    
+    
+     function page(nowIndex){	
+	 var pageIndex=nowIndex;
+	 var userId="${user.id}";
+  $.ajax({ 
+    type: 'POST', 	
+	url: basePath+'user/showShareAjax.html',
+	data: {
+		userId:userId,
+		pageIndex:pageIndex
+	},
+	dataType: 'json',
+	success: function(data){
+		$("#shareBody").html("");
+		 for(var i=0;i<data.share.length;i++){
+			 	
+				showShare(data.share[i].userId,data.share[i].fileId,data.share[i].fileTypeName,data.share[i].fileName,data.share[i].shareTime)
+      }
+		 var pageNum=data.share[0].pageNum;
+		 creatPage(pageNum,pageIndex);
+
+	},
+	error: function(jqXHR){     
+	   alert("发生错误：" + jqXHR.status);  
+	},     
+});
+  
+  
+  }
    
  </script>

@@ -488,7 +488,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			});	
 	
 
-   	$("#changeUser").attr("onclick","editUser(\""+userId+"\")");
+   	$("#changeUser").attr("onclick","editUser("+val+"\""+userId+"\")");
    	
    	}
    	
@@ -498,8 +498,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
   
     function del(val,userId){
-    $("#modal-container-449471").modal('show');
-    $("#delConfirm").click(function(){
+
     	 $.ajax({  type: 'POST', 	
 					url: basePath+'user/deleteUserAjax.html',
 					data: {
@@ -507,26 +506,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					},
 					dataType: 'json',
 					success: function(data){
-						$("#userBody").html("");
 						if(data.success){
 							toastr.success("删除成功");
 							$(val).parent().parent().remove();
 						}
 
- 
 
 					},
 					error: function(jqXHR){     
 					   alert("发生错误：" + jqXHR.status);  
 					},     
 				});
-    
-    
-    	})
-   
-    
-    
-    
     
 
   }
@@ -654,7 +644,7 @@ for(var i=0;i<userJson.users.length;i++){
 
   
   
-  function editUser(userId){
+  function editUser(val,userId){
 	  var userName=$("#editUser input").eq(0).val().trim();
 	  var userAccount=$("#editUser input").eq(1).val().trim();
 	  var workTime=$('#datetimepicker1').val();
@@ -742,12 +732,7 @@ for(var i=0;i<userJson.users.length;i++){
   }
 	  
 
-  
-  
 
-	  
-	  
-	  
   
  
  </script>

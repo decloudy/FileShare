@@ -14,7 +14,6 @@ import com.zust.FileShare.dto.FiletypeDto;
 import com.zust.FileShare.dto.ShareDto;
 import com.zust.FileShare.entity.File;
 import com.zust.FileShare.entity.Filetype;
-import com.zust.FileShare.entity.ShareId;
 import com.zust.FileShare.service.FileTypeServiceI;
 
 @Service

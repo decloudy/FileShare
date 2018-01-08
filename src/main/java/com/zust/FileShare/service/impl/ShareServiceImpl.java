@@ -16,7 +16,6 @@ import com.zust.FileShare.dto.UserDto;
 import com.zust.FileShare.entity.File;
 import com.zust.FileShare.entity.Filetype;
 import com.zust.FileShare.entity.Share;
-import com.zust.FileShare.entity.ShareId;
 import com.zust.FileShare.entity.User;
 import com.zust.FileShare.service.ShareService;
 
@@ -51,7 +50,7 @@ public class ShareServiceImpl implements ShareService {
 	@Override
 	public List<ShareDto> findByPages(int page, int rows, String sort,int userId) {
 		// TODO Auto-generated method stub
-		String sql="select * from share s where s.userId="+userId;
+		String sql="select * from share s where s.userId="+userId+" order by shareTime desc";
 
 		List<Share> shareList = shareDao.findByUser(sql, page, rows);
         List<ShareDto> shareDtoList = new ArrayList<ShareDto>();
@@ -61,10 +60,10 @@ public class ShareServiceImpl implements ShareService {
     		File file=fileDao.findById(share.getFile().getId());
     		Filetype filetype=filetypeDao.findById(file.getFiletype().getId());
     		ShareDto shareDto = new ShareDto();
+    		BeanUtils.copyProperties(share,shareDto);
     		shareDto.setFileId(share.getFile().getId());
     		shareDto.setUserId(share.getUser().getId());
     		shareDto.setFileName(file.getFileName());
-    		shareDto.setShareTime(share.getShareTime());
     		shareDto.setFileTypeName(filetype.getTypeName());
     		shareDtoList.add(shareDto );
         }
@@ -80,6 +79,26 @@ public class ShareServiceImpl implements ShareService {
 	public BigInteger getCount(int userId) {
 		// TODO Auto-generated method stub
 		return shareDao.countBySql("select count(userId) from Share where userId="+userId);
+	}
+	
+	
+	@Override
+	public int deleteShare(int fileId) {
+		// TODO Auto-generated method stub
+		String sql="delete from share where fileId="+fileId;
+		shareDao.executeSql(sql);
+		return 1;
+		
+	}
+	
+	
+	@Override
+	public int deleteByUser(int userId) {
+		// TODO Auto-generated method stub
+		String sql="delete from share where userId="+userId;
+		fileDao.executeSql(sql);
+		return 1;
+		
 	}
 
 }
