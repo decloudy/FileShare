@@ -1,27 +1,70 @@
 package com.zust.FileShare.dto;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+import com.zust.FileShare.entity.File;
+import com.zust.FileShare.entity.User;
+
+
 public class ShareDto{
 
-	private ShareIdDto id;
-	private String user;
-	private String file;
-	
-	public ShareIdDto getId() {
-		return id;
+	// Fields
+	private Integer id;
+	private Integer userId;
+	private Integer fileId;
+	private String fileName;
+	private String fileTypeName;
+	private Date shareTime;
+	public Integer getId() {
+		return this.id;
 	}
-	public void setId(ShareIdDto id) {
+
+	public void setId(Integer id) {
 		this.id = id;
 	}
-	public String getUser() {
-		return user;
+	
+	
+	public Integer getUserId() {
+		return userId;
 	}
-	public void setUser(String user) {
-		this.user = user;
+	public void setUserId(Integer userId) {
+		this.userId = userId;
 	}
-	public String getFile() {
-		return file;
+	public Integer getFileId() {
+		return fileId;
 	}
-	public void setFile(String file) {
-		this.file = file;
+	public void setFileId(Integer fileId) {
+		this.fileId = fileId;
 	}
+	public String getFileName() {
+		return fileName;
+	}
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+	public String getFileTypeName() {
+		return fileTypeName;
+	}
+	public void setFileTypeName(String fileTypeName) {
+		this.fileTypeName = fileTypeName;
+	}
+	
+	
+	public Date getShareTime() {
+		return shareTime;
+	}
+	public void setShareTime(Date shareTime) {
+		this.shareTime = shareTime;
+	}
+	
+
 
 }

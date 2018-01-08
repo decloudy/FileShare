@@ -1,14 +1,20 @@
 package com.zust.FileShare.entity;
 
+import java.util.Date;
+
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+
 
 /**
  * Share entity. @author MyEclipse Persistence Tools
@@ -20,63 +26,68 @@ public class Share implements java.io.Serializable {
 
 	// Fields
 
-	private ShareId id;
-	private User user;
-	private File file;
+		private Integer id;
+		private User user;
+		private File file;
+		private Date shareTime;
 
-	// Constructors
+		// Constructors
 
-	/** default constructor */
-	public Share() {
-	}
+		/** default constructor */
+		public Share() {
+		}
 
-	/** minimal constructor */
-	public Share(ShareId id) {
-		this.id = id;
-	}
+		/** full constructor */
+		public Share(User user, File file, Date shareTime) {
+			this.user = user;
+			this.file = file;
+			this.shareTime = shareTime;
+		}
 
-	/** full constructor */
-	public Share(ShareId id, User user, File file) {
-		this.id = id;
-		this.user = user;
-		this.file = file;
-	}
+		// Property accessors
+		@Id
+		@GeneratedValue
 
-	// Property accessors
-	@EmbeddedId
+		@Column(name = "Id", unique = true, nullable = false)
 
-	@AttributeOverrides({ @AttributeOverride(name = "userId", column = @Column(name = "userId")),
-			@AttributeOverride(name = "fileId", column = @Column(name = "fileId")),
-			@AttributeOverride(name = "shareTime", column = @Column(name = "shareTime", length = 19)) })
+		public Integer getId() {
+			return this.id;
+		}
 
-	public ShareId getId() {
-		return this.id;
-	}
+		public void setId(Integer id) {
+			this.id = id;
+		}
 
-	public void setId(ShareId id) {
-		this.id = id;
-	}
+		@ManyToOne(fetch = FetchType.LAZY)
+		@JoinColumn(name = "userId")
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "userId", insertable = false, updatable = false)
+		public User getUser() {
+			return this.user;
+		}
 
-	public User getUser() {
-		return this.user;
-	}
+		public void setUser(User user) {
+			this.user = user;
+		}
 
-	public void setUser(User user) {
-		this.user = user;
-	}
+		@ManyToOne(fetch = FetchType.LAZY)
+		@JoinColumn(name = "fileId")
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "fileId", insertable = false, updatable = false)
+		public File getFile() {
+			return this.file;
+		}
 
-	public File getFile() {
-		return this.file;
-	}
+		public void setFile(File file) {
+			this.file = file;
+		}
 
-	public void setFile(File file) {
-		this.file = file;
-	}
+		@Column(name = "shareTime", length = 19)
+
+		public Date getShareTime() {
+			return this.shareTime;
+		}
+
+		public void setShareTime(Date shareTime) {
+			this.shareTime = shareTime;
+		}
 
 }

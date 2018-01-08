@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.zust.FileShare.dao.FileDao;
 import com.zust.FileShare.dao.FiletypeDao;
 import com.zust.FileShare.dto.FileDto;
+import com.zust.FileShare.dto.UserDto;
 import com.zust.FileShare.entity.File;
 import com.zust.FileShare.entity.Filetype;
 import com.zust.FileShare.entity.User;
@@ -131,6 +132,17 @@ public class FileServiceImpl implements FileServiceI {
 		fileDao.save(f);
 
 	}
+	
+	@Override
+	public FileDto findById(int id) {
+		// TODO Auto-generated method stub
+		File file= fileDao.findById(id);
+		FileDto fileDto = new FileDto();
+		BeanUtils.copyProperties(file,fileDto);
+		return fileDto;
+	}
+	
+	
 
 	@Override
 	public void delete(String id) {

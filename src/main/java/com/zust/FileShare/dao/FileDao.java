@@ -9,5 +9,5 @@ import com.zust.FileShare.entity.File;
  * 
  */
 public interface FileDao extends BaseDao<File> {
-
+	 public File findById(int id);
 }

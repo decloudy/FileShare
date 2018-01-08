@@ -539,6 +539,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	}
 	
 	
+	var json='${userList}';
+	
+	if(json!='blank'){
+	var userJson=JSON.parse(json);
+
+for(var i=0;i<userJson.users.length;i++){
+
+   		showUsers(userJson.users[i].id,userJson.users[i].userName,userJson.users[i].userAccount,userJson.users[i].workTime,userJson.users[i].departId,userJson.users[i].departName)
+   	}
+   	creatPage(parseInt(userJson.users[0].pageNum),1,"userAccount")
+}
+	
+	
+	
+	
 			 function sortSearch(sortMethod,searchMethod,searchContent){	  
 			  $.ajax({ 
 				    type: 'POST', 	
@@ -666,16 +681,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					$("#modal-container-99553").modal('hide');
 					toastr.success("修改成功");
 					 
-
-
-					
-					
-					//var td=$("#user"+userId);
+			
+					//var tr=$("#user"+userId);
 					//alert($("#user2 td").eq(1).val());
-					//td.children().eq(0).val(userName);
-					//td.children().eq(1).val(userAccount);
-					//td.children().eq(2).val(data.departName);
-					//td.children().eq(3).val(workTime);
+					//tr.children().eq(0).val(userName);
+					//tr.children().eq(1).val(userAccount);
+					//tr.children().eq(2).val(data.departName);
+					//tr.children().eq(3).val(workTime);
 				}else{
 					 toastr.error("该工号已存在，修改失败");
 				}

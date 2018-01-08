@@ -19,4 +19,6 @@ public interface FileTypeServiceI {
 	 */
 	public List<FiletypeDto> getFileTypeList();
 
+	public FiletypeDto findById(int id);
+
 }

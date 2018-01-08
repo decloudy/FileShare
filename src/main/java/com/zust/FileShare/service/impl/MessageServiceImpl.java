@@ -2,7 +2,9 @@ package com.zust.FileShare.service.impl;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.zust.FileShare.dao.MessageDao;
 import com.zust.FileShare.dao.UserDao;
 import com.zust.FileShare.dto.MessageDto;
+import com.zust.FileShare.dto.UserDto;
 import com.zust.FileShare.entity.Message;
 import com.zust.FileShare.entity.User;
 import com.zust.FileShare.service.MessageService;
@@ -44,4 +47,29 @@ public class MessageServiceImpl implements MessageService {
 		messagedao.save(msg);
 		return 1;
 	}
+	
+	
+	@Override
+	public List<MessageDto> findByType(int type) {
+		// TODO Auto-generated method stub
+		String hql="from Message m where m.msgType="+type;
+		List<Message> messageList = messagedao.find(hql);
+        List<MessageDto> messageDtoList = new ArrayList<MessageDto>();
+        for(Message message:messageList){
+        	MessageDto messageDto = new MessageDto();
+            BeanUtils.copyProperties(message,messageDto);
+            messageDto.setUserByReceiveId(message.getUserByReceiveId().getId());
+            messageDto.setUserBySendId(message.getUserBySendId().getId());
+            messageDtoList.add(messageDto);
+        }
+        return messageDtoList;
+		
+	}
+	
+	
+	
+	
+	
+	
+	
 }

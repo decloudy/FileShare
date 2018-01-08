@@ -25,36 +25,7 @@ $(document).ready(function(){
     $("#userEdit").fadeIn();
     $("#noticeEdit").hide();
     
-    
-    $.ajax({ 
-	    type: 'POST', 	
-		url: basePath+'user/showUsersAjax.html',
-		data: {
-			userId:"110",
-			sort:"id",
-			pageIndex:"1"
-		},
-		dataType: 'json',
-		success: function(data){
-			$("#userBody").html("");
-			 for(var i=0;i<data.users.length;i++){
-				 	var userName=data.users[i].userName;
-					var userId=data.users[i].id;
-					var departId=data.users[i].departId;
-					var departName=data.users[i].departName;
-					var workTime=data.users[i].workTime;
-					var userAccount=data.users[i].userAccount;
-					showUsers(userId,userName,userAccount,workTime,departId,departName);
-         }
-			 var pageNum=data.users[1].pageNum;
-			 creatPage(pageNum,1,"userAccount");
 
-		},
-		error: function(jqXHR){     
-		   alert("发生错误：" + jqXHR.status);  
-		},     
-	});
-    
    
 
   });

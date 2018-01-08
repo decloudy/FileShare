@@ -11,7 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.zust.FileShare.dao.FiletypeDao;
 import com.zust.FileShare.dto.FiletypeDto;
+import com.zust.FileShare.dto.ShareDto;
+import com.zust.FileShare.entity.File;
 import com.zust.FileShare.entity.Filetype;
+import com.zust.FileShare.entity.ShareId;
 import com.zust.FileShare.service.FileTypeServiceI;
 
 @Service
@@ -34,4 +37,15 @@ public class FileTypeServiceImpl implements FileTypeServiceI {
 		}
 		return rl;
 	}	
+	
+	
+	
+	@Override
+	public FiletypeDto findById(int id) {
+		// TODO Auto-generated method stub
+		Filetype filetype= fileType.findById(id);
+		FiletypeDto filetypeDto = new FiletypeDto();
+		BeanUtils.copyProperties(filetype,filetypeDto);
+		return filetypeDto;
+	}
 }

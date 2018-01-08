@@ -1,5 +1,6 @@
 package com.zust.FileShare.dao;
 
+
 import com.zust.FileShare.entity.Filetype;
 
 /**
@@ -9,5 +10,5 @@ import com.zust.FileShare.entity.Filetype;
  * 
  */
 public interface FiletypeDao extends BaseDao<Filetype> {
-
+	public Filetype findById(int id);
 }

@@ -15,11 +15,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.zust.FileShare.dto.DepartmentDto;
 import com.zust.FileShare.dto.FiletypeDto;
 import com.zust.FileShare.dto.NoticeDto;
+import com.zust.FileShare.dto.ShareDto;
 import com.zust.FileShare.dto.UserDto;
 import com.zust.FileShare.entity.User;
 import com.zust.FileShare.service.DepartmentService;
 import com.zust.FileShare.service.FileTypeServiceI;
 import com.zust.FileShare.service.NoticeService;
+import com.zust.FileShare.service.ShareService;
 import com.zust.FileShare.service.UserService;
 
 import javax.servlet.ServletRequest;
@@ -32,6 +34,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -54,6 +57,9 @@ public class UserController {
 	
 	@Autowired
     private NoticeService noticeService;
+	
+	@Autowired
+    private ShareService shareService;
 
     
     @Autowired
@@ -68,6 +74,33 @@ public class UserController {
     	model.addAttribute("user",userDto);
     	model.addAttribute("workTime",workTime);
     	
+    	
+    	int pageIndex= 1;
+		String sort="shareTime";
+		List<ShareDto> shareDto=shareService.findByPages(pageIndex, 8, sort,userDto.getId());
+		BigInteger count=shareService.getCount(userDto.getId());
+		int countNum=count.intValue();
+		int pageNum=0;
+		if(countNum%8==0){
+			pageNum=(int) (countNum/8);
+		}else{
+			pageNum=(int) (countNum/8+1);
+		}
+		StringBuffer json=new StringBuffer();
+		json.append("{\"share\":[");
+		for(ShareDto share:shareDto){
+			json.append("{\"fileId\":\""+share.getFileId()+"\",");
+			json.append("\"fileName\":\""+share.getFileName()+"\",");
+			json.append("\"fileTypeName\":\""+share.getFileTypeName()+"\",");
+			json.append("\"userId\":\""+userDto.getId()+"\",");
+			json.append("\"pageNum\":\""+pageNum+"\",");
+			json.append("\"shareTime\":\""+share.getShareTime()+"\"},");	
+		}
+		json.deleteCharAt(json.length() - 1);
+		json.append("]}");
+    	
+		model.addAttribute("shareList",json);
+    		
         return "personal";
     }
     
@@ -75,6 +108,38 @@ public class UserController {
     @RequestMapping(value = "/admin",method = RequestMethod.GET)
     public String admin(ModelMap model){
     	model.addAttribute("departList", departmentService.findAllDepart());
+    	
+    	int pageIndex= 1;
+		String sort="userAccount";
+		List<UserDto> userDto=userService.findByPages(pageIndex, 8, sort);
+		long count=userService.getCount();
+		int pageNum=0;
+		if(count%8==0){
+			pageNum=(int) (count/8);
+		}else{
+			pageNum=(int) (count/8+1);
+		}
+
+		StringBuffer json=new StringBuffer();
+		json.append("{\"users\":[");
+		for(UserDto user:userDto){
+			SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
+			String workTime=dateFormat.format(user.getWorkTime());
+			json.append("{\"id\":\""+user.getId()+"\",");
+			json.append("\"departId\":\""+user.getDepartId()+"\",");
+			json.append("\"userName\":\""+user.getUserName()+"\",");
+			json.append("\"workTime\":\""+workTime+"\",");
+			json.append("\"departName\":\""+user.getDepartName()+"\",");
+			json.append("\"pageNum\":\""+pageNum+"\",");
+			json.append("\"userAccount\":\""+user.getUserAccount()+"\"},");	
+		}
+		json.deleteCharAt(json.length() - 1);
+		json.append("]}");
+    	
+		model.addAttribute("userList",json);
+    	
+    	
+    	
         return "admin";
     }
     

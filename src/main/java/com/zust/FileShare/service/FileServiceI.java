@@ -85,4 +85,6 @@ public interface FileServiceI {
 	
 	public int deleteFile(int id);
 
+	public FileDto findById(int id);
+
 }

@@ -176,7 +176,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
+                                            <tr id="shareBody">
                                                 <td>
                                                     	视频
                                                 </td>
@@ -252,21 +252,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                                 </div>
                                  <div class="panel-footer" style="padding-top:0px;padding-bottom:0px">
 									<ul class="pagination " id="page">
-                                        <li>
-                                            <a href="#">1</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">2</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">3</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">4</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">下一页</a>
-                                        </li>
+                                       
 
                                 </ul>
                                 </div>
@@ -543,6 +529,30 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     }else{
     	$("#menu_bar li").eq(8).hide();
     }
+    
+    
+    
+    function showShare(userId,fileId,fileType,fileName,shareTime){
+  		var node='';	
+  		node+='<tr id="file'+fileId+'"><td>'+fileType+'</td><td>'+fileName+'</td><td>'+shareTime+'</td><td onclick="edit(this,'+userId+','+fileId+')"><i class="fa  fa-download fa-lg dwl" ></i><td><i class="fa fa-trash-o fa-lg del" onclick="del(this,'+userId+','+fileId+')"></i></td> </tr>';
+  		$("#shareBody").append(node);
+  		
+  	}
+    
+    
+    var json='${shareList}';
+	
+	if(json!='blank'){
+	var shareJson=JSON.parse(json);
+
+for(var i=0;i<userJson.users.length;i++){
+
+   		showShare(shareJson.share[i].userId,shareJson.share[i].fileId,shareJson.share[i].fileType,shareJson.share[i].fileName,shareJson.share[i].shareTime)
+   	}
+   	creatPage(parseInt(shareJson.share[0]..pageNum),1,"shareTime")
+}
+    
+    
 
   $(function(){
             var userSet="${user.userSet}";

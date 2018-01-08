@@ -181,5 +181,35 @@ $(document).ready(function(){
     	    $("#modal-container-455769").modal('show');
 
     	  });
+      
+      
+      
+      function showShare(userId,fileId,fileType,fileName,shareTime){
+  		var node='';	
+  		node+='<tr id="file'+fileId+'"><td>'+fileType+'</td><td>'+fileName+'</td><td>'+shareTime+'</td><td onclick="edit(this,'+userId+','+fileId+')"><i class="fa  fa-download fa-lg dwl" ></i><td><i class="fa fa-trash-o fa-lg del" onclick="del(this,'+userId+','+fileId+')"></i></td> </tr>';
+  		$("#shareBody").append(node);
+  		
+  	}
+      
+      function creatPage(pageNum,pageIndex,sortMethod){
+		  	$('#page').html("");
+			var node='';
+			for(var i=0;i<pageNum;i++){
+
+			node+='<li><a id="'+(i+1)+'" style="cursor:pointer" onclick="page(\''+sortMethod+'\','+(i+1)+')">'+(i+1)+'</a></li>';}
+
+			if(parseInt(pageNum)!=1&&parseInt(pageIndex)!=parseInt(pageNum)){
+				node+='<li><a style="cursor:pointer" id="'+(parseInt(pageIndex)+1)+'" onclick="page(\''+sortMethod+'\','+(parseInt(pageIndex)+1)+')">下一页 &rarr;</a></li>';
+			}
+			$('#page').append(node);
+			
+			if(parseInt(pageIndex)!=1){
+				$('#page').prepend('<li><a style="cursor:pointer" id="'+(parseInt(pageIndex)-1)+'" onclick="page(\''+sortMethod+'\','+(parseInt(pageIndex)-1)+')">&larr; 上一页</a></li>');
+				
+			}
+		}
+      
+      
+      
     
 });
